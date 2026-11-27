@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Services | Jarvix</title>
+  <meta name="description" content="Platform engineering, DevOps & CI/CD, SRE, observability, AI platforms and agents, MLOps, cloud migration and optimisation services from Jarvix.">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a href="/"><img src="/assets/logo.png" alt="Jarvix"></a>
+    <input type="checkbox" id="menu-toggle" aria-label="Toggle menu">
+    <label for="menu-toggle" class="menu-btn" aria-hidden="true">&#9776;</label>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/services.html" aria-current="page">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/contact/" class="btn">Contact us</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="eyebrow">Services</div>
+      <h1>What we can do for you</h1>
+      <p class="lead">Each engagement is scoped to your goals. Pick one area or combine several. They're designed to work together.</p>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="service" id="platform">
+      <div>
+        <div class="eyebrow">01</div>
+        <h2>Platform Engineering</h2>
+        <p>Give developers a paved road to production. We design and build internal developer platforms that make the right way the easy way.</p>
+      </div>
+      <div>
+        <ul>
+          <li>Internal developer platform (IDP) strategy and architecture</li>
+          <li>Developer portals and service catalogues (e.g. Backstage)</li>
+          <li>Golden-path templates for new services and environments</li>
+          <li>Kubernetes platform design, multi-tenancy and guardrails</li>
+          <li>Policy as code, secrets management and secure defaults</li>
+        </ul>
+        <div class="tags"><span>Kubernetes</span><span>Backstage</span><span>Crossplane</span><span>OPA</span><span>Vault</span></div>
+      </div>
+    </div>
+
+    <div class="service" id="devops">
+      <div>
+        <div class="eyebrow">02</div>
+        <h2>DevOps &amp; CI/CD</h2>
+        <p>Shorten the path from commit to customer with automated, auditable delivery.</p>
+      </div>
+      <div>
+        <ul>
+          <li>CI/CD pipeline design and migration (GitHub Actions, GitLab CI, Jenkins)</li>
+          <li>Infrastructure as code with Terraform and reusable modules</li>
+          <li>GitOps-based deployments with Argo CD or Flux</li>
+          <li>Containerisation and cloud migration on AWS, Azure and GCP</li>
+          <li>DevSecOps: scanning, SBOMs and supply-chain security in the pipeline</li>
+        </ul>
+        <div class="tags"><span>Terraform</span><span>GitHub Actions</span><span>GitLab CI</span><span>Argo CD</span><span>Docker</span></div>
+      </div>
+    </div>
+
+    <div class="service" id="sre">
+      <div>
+        <div class="eyebrow">03</div>
+        <h2>Site Reliability Engineering</h2>
+        <p>Make reliability measurable and manageable, so you can move fast without breaking trust.</p>
+      </div>
+      <div>
+        <ul>
+          <li>SLIs, SLOs and error budgets aligned with business priorities</li>
+          <li>Toil reduction and automation of operational work</li>
+          <li>Alerting hygiene, on-call design and runbooks</li>
+          <li>Incident management and blameless post-incident reviews</li>
+          <li>Resilience testing, capacity planning and performance tuning</li>
+        </ul>
+        <div class="tags"><span>SLOs</span><span>Incident management</span><span>On-call</span><span>Chaos engineering</span></div>
+      </div>
+    </div>
+
+    <div class="service" id="observability">
+      <div>
+        <div class="eyebrow">04</div>
+        <h2>Observability</h2>
+        <p>See what your systems are doing, and why, before your customers notice. We build observability stacks that are useful during an incident and affordable the rest of the time.</p>
+      </div>
+      <div>
+        <ul>
+          <li>Unified metrics, logs and traces with OpenTelemetry instrumentation</li>
+          <li>Observability stack design: Prometheus, Grafana, Loki, Tempo, Elastic, Datadog and others</li>
+          <li>Service dashboards, SLO dashboards and business KPIs in one place</li>
+          <li>Actionable alerting: fewer, better alerts routed to the right team</li>
+          <li>Telemetry cost control: sampling, retention and cardinality management</li>
+          <li>Migration between observability vendors and tools</li>
+        </ul>
+        <div class="tags"><span>OpenTelemetry</span><span>Prometheus</span><span>Grafana</span><span>Loki</span><span>Tempo</span><span>Datadog</span></div>
+      </div>
+    </div>
+
+    <div class="service" id="ai">
+      <div>
+        <div class="eyebrow">05</div>
+        <h2>AI Platforms &amp; Agents</h2>
+        <p>Run LLM and GenAI workloads in production with the same rigour as the rest of your stack, and put agentic AI to work alongside your engineers: investigating incidents, finding likely root causes and automating routine operations, with humans kept in control.</p>
+      </div>
+      <div>
+        <ul>
+          <li>GPU infrastructure and self-hosted model serving (vLLM, KServe, Triton)</li>
+          <li>Model gateways, rate limiting and usage/cost tracking for LLM APIs</li>
+          <li>RAG pipelines, vector databases and evaluation harnesses</li>
+          <li>Incident analysis agents that correlate alerts, logs, metrics, traces and recent deployments</li>
+          <li>Root-cause suggestions and auto-drafted incident timelines and post-incident reviews</li>
+          <li>Runbook automation agents with approval steps for safe remediation</li>
+          <li>ChatOps assistants in Slack or Microsoft Teams, integrated with your tools via MCP</li>
+          <li>Guardrails, data privacy, audit trails and governance for AI applications and agents</li>
+        </ul>
+        <div class="tags"><span>vLLM</span><span>KServe</span><span>Vector DBs</span><span>LLM gateways</span><span>Agentic AI</span><span>AIOps</span><span>MCP</span></div>
+      </div>
+    </div>
+
+    <div class="service" id="mlops">
+      <div>
+        <div class="eyebrow">06</div>
+        <h2>MLOps</h2>
+        <p>Turn one-off models into repeatable, monitored products.</p>
+      </div>
+      <div>
+        <ul>
+          <li>Training and retraining pipelines with experiment tracking</li>
+          <li>Model registry, versioning and approval workflows</li>
+          <li>Batch and real-time model serving</li>
+          <li>Feature stores and data validation</li>
+          <li>Drift, performance and data-quality monitoring</li>
+        </ul>
+        <div class="tags"><span>MLflow</span><span>Kubeflow</span><span>Airflow</span><span>Feast</span><span>SageMaker</span></div>
+      </div>
+    </div>
+
+    <div class="service" id="cloud">
+      <div>
+        <div class="eyebrow">07</div>
+        <h2>Cloud Strategy, Migration &amp; Optimisation</h2>
+        <p>Move to the cloud with a plan, run across clouds without chaos, and keep spend under control as you grow.</p>
+      </div>
+      <div>
+        <ul>
+          <li>Cloud strategy and multi-cloud / hybrid architecture</li>
+          <li>On-premises to cloud migration: assessment, wave planning and execution (rehost, replatform, refactor)</li>
+          <li>Low-downtime data and workload migration with rollback plans</li>
+          <li>Cloud landing zones, account structure and network design</li>
+          <li>FinOps practices: tagging, showback and budget alerts</li>
+          <li>Rightsizing, autoscaling and commitment planning</li>
+          <li>Security baselines and compliance readiness</li>
+        </ul>
+        <div class="tags"><span>AWS</span><span>Azure</span><span>GCP</span><span>Hybrid cloud</span><span>FinOps</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Not sure where to start?</h2>
+      <p>We'll begin with a short conversation about your goals and current setup. No obligation.</p>
+      <a href="/contact/" class="btn">Book a conversation</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/assets/logo.png" alt="Jarvix">
+        <p>Platform engineering, DevOps, SRE,<br>AI platforms &amp; MLOps consulting.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/contact/">Contact</a>
+      </div>
+      <div>
+        <h4>Office</h4>
+        <p>Jarvix Private Limited<br>Pune, Maharashtra,<br>India - 411036</p>
+        <a href="mailto:contact@jarvix.in">contact@jarvix.in</a>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Jarvix Private Limited. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>

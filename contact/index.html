@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact | Jarvix</title>
+  <meta name="description" content="Contact Jarvix about platform engineering, DevOps, SRE, AI platforms or MLOps.">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a href="/"><img src="/assets/logo.png" alt="Jarvix"></a>
+    <input type="checkbox" id="menu-toggle" aria-label="Toggle menu">
+    <label for="menu-toggle" class="menu-btn" aria-hidden="true">&#9776;</label>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/services.html">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/contact/" class="btn" aria-current="page">Contact us</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="eyebrow">Contact</div>
+      <h1>Let's talk</h1>
+      <p class="lead">Tell us a little about your team and what you're trying to achieve. Use the form below or email <a href="mailto:contact@jarvix.in">contact@jarvix.in</a>. We'll get back to you within one business day.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap contact">
+      <div>
+        <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+          <!-- Web3Forms public access key: meant to be in client-side HTML -->
+          <input type="hidden" name="access_key" value="8c8eebc9-feeb-4423-9932-1676d3747a3d">
+          <input type="hidden" name="subject" value="New enquiry from jarvix.in">
+          <input type="hidden" name="redirect" value="https://jarvix.in/thank-you/">
+          <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off">
+
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" autocomplete="name" required>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+
+          <label for="message">How can we help?</label>
+          <textarea id="message" name="message" required></textarea>
+
+          <button type="submit" class="btn">Send message</button>
+          <p id="form-status" role="status" style="margin-top:14px"></p>
+        </form>
+        <script>
+          // Submit via JS so we redirect ourselves; Web3Forms' free plan only honours same-domain "redirect" (fails on localhost).
+          // Without JS the form still POSTs normally and uses the hidden redirect field.
+          const form = document.getElementById('contact-form');
+          const status = document.getElementById('form-status');
+          form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = form.querySelector('button');
+            const data = Object.fromEntries(new FormData(form));
+            delete data.redirect; // would make the API answer with a redirect instead of JSON
+            btn.disabled = true;
+            status.textContent = 'Sending...';
+            try {
+              const res = await fetch(form.action, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                body: JSON.stringify(data)
+              });
+              const json = await res.json();
+              if (res.ok && json.success) { window.location.href = '/thank-you/'; return; }
+              status.textContent = json.message || 'Something went wrong. Please email contact@jarvix.in.';
+            } catch {
+              status.textContent = 'Network error. Please try again or email contact@jarvix.in.';
+            }
+            btn.disabled = false;
+          });
+        </script>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:24px">
+          <h3>Email</h3>
+          <p><a href="mailto:contact@jarvix.in">contact@jarvix.in</a></p>
+        </div>
+        <div class="card">
+          <h3>Office</h3>
+          <p>Jarvix Private Limited<br>Pune, Maharashtra,<br>India - 411036</p>
+        </div>
+        <div class="card" style="margin-top:24px">
+          <h3>We can help with</h3>
+          <p>Platform engineering · DevOps &amp; CI/CD · SRE · Observability · AI platforms &amp; agents · MLOps · Cloud migration &amp; optimisation</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/assets/logo.png" alt="Jarvix">
+        <p>Platform engineering, DevOps, SRE,<br>AI platforms &amp; MLOps consulting.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/contact/">Contact</a>
+      </div>
+      <div>
+        <h4>Office</h4>
+        <p>Jarvix Private Limited<br>Pune, Maharashtra,<br>India - 411036</p>
+        <a href="mailto:contact@jarvix.in">contact@jarvix.in</a>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Jarvix Private Limited. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>
