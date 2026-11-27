@@ -60,9 +60,10 @@ Then enable **Enforce HTTPS** in the Pages settings.
 ## Adding a blog post
 
 1. Copy an existing post folder, e.g. `blog/golden-paths/`, to `blog/<new-slug>/`.
-2. In the copy, update `<title>`, meta description, canonical and `og:` URLs, the JSON-LD block (headline, description, dates, keywords), the heading, date, read time, article body, the "Need help with..." service link and the "More from the blog" links.
+2. In the copy, update `<title>`, meta description, canonical and `og:` URLs, both JSON-LD blocks (BlogPosting and BreadcrumbList), the breadcrumb, heading, date, read time, "Tools covered" and "Topics" chips, article body, the "On this page" sidebar, the "Need help with..." service link and the "More from the blog" links.
 3. Add a card at the top of `blog/index.html`.
 4. Update "Latest from the blog" on `index.html` to show the three newest posts.
 5. Add the URL to `sitemap.xml` with a `<lastmod>` date.
+6. Add a card's `data-tags` (tag slugs) so the topic filter on `/blog/?tag=...` finds it, and link the post from the matching service's "Related reading" on `services.html`.
 
 Posts are bylined "Jarvix Engineering".
