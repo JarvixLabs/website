@@ -19,6 +19,7 @@ Guidance for AI coding agents working on this repo. See `README.md` for structur
 
 - **Brand:** "Jarvix" in copy. "Jarvix Private Limited" for the legal entity (footer, privacy, office).
   Domain `jarvix.in`, email `contact@jarvix.in`, office "Pune, Maharashtra, India - 411036".
+  Show the location only in the address blocks (footer, contact page, privacy contact). Don't write "based in Pune" in body copy or meta descriptions.
 - **Positioning:** a cloud-native engineering consultancy covering the full range below. Don't let the hero or intro
   read as Kubernetes-only or AI-only.
 - **Canonical service names.** Use these exact names everywhere: cards, headings, footer, meta descriptions, contact list.

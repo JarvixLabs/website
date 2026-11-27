@@ -1,6 +1,6 @@
 # jarvix.in
 
-Website for **Jarvix Private Limited**, a cloud-native engineering consultancy in Pune, India.
+Website for **Jarvix Private Limited**, a cloud-native engineering consultancy.
 Plain HTML + CSS, no build step, hosted on GitHub Pages at <https://jarvix.in>.
 
 ## Structure
