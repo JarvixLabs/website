@@ -34,7 +34,7 @@ Guidance for AI coding agents working on this repo. See `README.md` for structur
   Add them only when the owner supplies real ones.
 - Avoid claims that can't be backed up yet: 24x7 on-call, named compliance standards, "before customers notice".
 - **Spelling:** British/Indian English (optimisation, organisation, prioritised). Professional tone, no slang.
-- **Reply time:** "within 4 to 5 business days". This is the owner's deliberate choice; don't change it without asking.
+- **Reply time:** "within 2 to 3 business days". This is the owner's deliberate choice; don't change it without asking.
 - **Main button:** "Book a consultation".
 - **Tagline:** "Engineering at the intersection of cloud and AI" (a nod to the X in the logo). It appears under the
   footer logo on every page.
