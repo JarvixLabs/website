@@ -13,13 +13,16 @@ Plain HTML + CSS, no build step, hosted on GitHub Pages at <https://jarvix.in>.
 | `contact/index.html` | `/contact/` | Contact form (Web3Forms), email, office address |
 | `thank-you/index.html` | `/thank-you/` | Shown after a successful form submission (`noindex`) |
 | `privacy/index.html` | `/privacy/` | Privacy policy (DPDP Act 2023) |
+| `blog/index.html` | `/blog/` | Blog listing, newest first |
+| `blog/<slug>/index.html` | `/blog/<slug>/` | One folder per article |
+| `sitemap.xml`, `robots.txt` | | For search engines; list every public page |
 | `style.css` | | Shared styles; brand colours are CSS variables in `:root` |
-| `assets/` | | `logo.png`, `favicon.png` |
+| `assets/` | | `logo.png`, `favicon.png`, `logos/` (tool logos used in blog diagrams) |
 | `CNAME` | | Custom domain for GitHub Pages (`jarvix.in`) |
 | `_config.yml` | | Keeps `README.md` / `AGENTS.md` off the live site |
 
 All links and asset paths are root-absolute (`/style.css`, `/contact/`), so the site must be served from a domain root.
-Header and footer are duplicated in every page: change them in all six HTML files.
+Header and footer are duplicated in every page: change them in every HTML file (including each blog post).
 
 ## Run locally
 
@@ -53,3 +56,13 @@ DNS (GoDaddy, `jarvix.in`):
 | CNAME | `www` | `jarvixlabs.github.io` |
 
 Then enable **Enforce HTTPS** in the Pages settings.
+
+## Adding a blog post
+
+1. Copy an existing post folder, e.g. `blog/golden-paths/`, to `blog/<new-slug>/`.
+2. In the copy, update `<title>`, meta description, canonical and `og:` URLs, the JSON-LD block (headline, description, dates, keywords), the heading, date, read time, article body, the "Need help with..." service link and the "More from the blog" links.
+3. Add a card at the top of `blog/index.html`.
+4. Update "Latest from the blog" on `index.html` to show the three newest posts.
+5. Add the URL to `sitemap.xml` with a `<lastmod>` date.
+
+Posts are bylined "Jarvix Engineering".

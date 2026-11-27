@@ -10,7 +10,7 @@ Guidance for AI coding agents working on this repo. See `README.md` for structur
   The machine's default SSH key belongs to a different (work) account, so don't remove that setting.
 - **No AI attribution** in commits, PRs or files (no `Co-Authored-By: Claude`, no "Generated with" lines).
 - **Keep it plain HTML/CSS.** No frameworks, build tools or dependencies. Header and footer are duplicated in every
-  page, so update all six HTML files (`index.html`, `services.html`, `about.html`, `contact/`, `thank-you/`, `privacy/`).
+  page, so update every HTML file (`index.html`, `services.html`, `about.html`, `contact/`, `thank-you/`, `privacy/`, `blog/` and each post).
 - Use root-absolute links and asset paths (`/style.css`, `/contact/`).
 - Before reporting a change as done, serve locally (`python3 -m http.server`) and check the pages load. Screenshot
   with headless Chrome when the layout changes.
@@ -38,6 +38,15 @@ Guidance for AI coding agents working on this repo. See `README.md` for structur
 - **Main button:** "Book a consultation".
 - **Tagline:** "Engineering at the intersection of cloud and AI" (a nod to the X in the logo). It appears under the
   footer logo on every page.
+
+## Blog
+
+- Posts live in `blog/<slug>/index.html`; follow "Adding a blog post" in README.md and keep `blog/index.html`, the home page "Latest from the blog" section and `sitemap.xml` in sync.
+- Byline "Jarvix Engineering". The first eight posts were deliberately back-dated (1 Sep to 26 Nov 2026) at the owner's request.
+- Each post has a "Tools covered" row and at least one diagram. Diagrams are inline SVG in site colours (min-width 620px, scrolling sideways on small screens).
+- Tool logos live in `assets/logos/`. CNCF project logos come from the official github.com/cncf/artwork repo. Other brands come from Simple Icons, coloured with the official brand colour. Use logos only in diagrams and tool rows, not scattered through text. Scan new SVGs for scripts or external links before adding them.
+- Write genuinely useful, specific, practical content: no filler, no invented client stories or statistics, no long dashes.
+- Every post ends with a call-to-action linking to the matching `/services.html#<anchor>` and `/contact/`.
 
 ## Contact form
 

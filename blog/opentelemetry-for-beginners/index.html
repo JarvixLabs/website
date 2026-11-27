@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OpenTelemetry for Beginners: Metrics, Logs and Traces in One Pipeline | Jarvix Blog</title>
+  <meta name="description" content="A beginner-friendly introduction to OpenTelemetry: the three signals, the Collector, auto-instrumentation and a minimal working pipeline you can run.">
+  <link rel="canonical" href="https://jarvix.in/blog/opentelemetry-for-beginners/">
+  <meta property="og:title" content="OpenTelemetry for Beginners: Metrics, Logs and Traces in One Pipeline | Jarvix Blog">
+  <meta property="og:description" content="A beginner-friendly introduction to OpenTelemetry: the three signals, the Collector, auto-instrumentation and a minimal working pipeline you can run.">
+  <meta property="og:url" content="https://jarvix.in/blog/opentelemetry-for-beginners/">
+  <meta property="og:image" content="https://jarvix.in/assets/logo.png">
+  <meta property="og:type" content="article">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "OpenTelemetry for Beginners: Metrics, Logs and Traces in One Pipeline", "description": "A beginner-friendly introduction to OpenTelemetry: the three signals, the Collector, auto-instrumentation and a minimal working pipeline you can run.", "datePublished": "2026-10-13", "dateModified": "2026-10-13", "author": {"@type": "Organization", "name": "Jarvix Engineering", "url": "https://jarvix.in"}, "publisher": {"@type": "Organization", "name": "Jarvix Private Limited", "logo": {"@type": "ImageObject", "url": "https://jarvix.in/assets/logo.png"}}, "mainEntityOfPage": "https://jarvix.in/blog/opentelemetry-for-beginners/", "keywords": "Observability, OpenTelemetry"}</script>
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a href="/"><img src="/assets/logo.png" alt="Jarvix"></a>
+    <input type="checkbox" id="menu-toggle" aria-label="Toggle menu">
+    <label for="menu-toggle" class="menu-btn" aria-hidden="true">&#9776;</label>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/services.html">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/blog/" aria-current="page">Blog</a>
+      <a href="/contact/" class="btn">Contact us</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="eyebrow"><a href="/blog/" style="color:inherit;text-decoration:none">Blog</a> · Observability</div>
+      <h1 style="font-size:clamp(1.9rem,4.2vw,2.8rem);max-width:900px">OpenTelemetry for Beginners: Metrics, Logs and Traces in One Pipeline</h1>
+      <p class="meta">By Jarvix Engineering · <time datetime="2026-10-13">13 October 2026</time> · 4 min read</p>
+      <div class="tools"><span class="tools-label">Tools covered</span><span><img src="/assets/logos/opentelemetry.svg" alt="" width="20" height="20">OpenTelemetry</span><span><img src="/assets/logos/prometheus.svg" alt="" width="20" height="20">Prometheus</span><span><img src="/assets/logos/jaeger.svg" alt="" width="20" height="20">Jaeger</span><span><img src="/assets/logos/grafana.svg" alt="" width="20" height="20">Grafana</span><span><img src="/assets/logos/kubernetes.svg" alt="" width="20" height="20">Kubernetes</span><span><img src="/assets/logos/datadog.svg" alt="" width="20" height="20">Datadog</span></div>
+    </div>
+  </section>
+
+  <section style="padding-top:56px">
+    <div class="wrap post-layout">
+      <article class="article">
+<p>If you have looked into observability recently, you have almost certainly come across <strong>OpenTelemetry</strong> (often shortened to OTel). It has become the industry standard for collecting telemetry from applications and infrastructure, and it is supported by every major observability vendor. This guide explains what it is, how the pieces fit together, and how to get a first pipeline running.</p>
+
+<h2 id="what-problem-does-opentelemetry-solve">What problem does OpenTelemetry solve?</h2>
+<p>Before OpenTelemetry, each monitoring vendor shipped its own agents and libraries. Instrumenting your code for one vendor tied you to it, and switching meant re-instrumenting everything. OpenTelemetry provides a single, vendor-neutral set of APIs, SDKs and tools to generate, collect and export telemetry. You instrument once, then send the data wherever you like: Prometheus, Grafana, Jaeger, Elastic, Datadog, New Relic and many more.</p>
+<p>OpenTelemetry is an open-source project under the Cloud Native Computing Foundation (CNCF), formed from the merger of OpenTracing and OpenCensus.</p>
+
+<h2 id="the-three-main-signals">The three main signals</h2>
+<table>
+  <thead><tr><th>Signal</th><th>What it tells you</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Metrics</strong></td><td>Numeric measurements over time; cheap to store and great for alerting</td><td>Requests per second, error rate, p95 latency, CPU usage</td></tr>
+    <tr><td><strong>Traces</strong></td><td>The path of a single request across services, broken into timed spans</td><td>A checkout request that calls cart, payment and inventory services</td></tr>
+    <tr><td><strong>Logs</strong></td><td>Timestamped records of discrete events, with detail</td><td>"Payment declined for order 123: insufficient funds"</td></tr>
+  </tbody>
+</table>
+<p>The real power comes from <strong>correlation</strong>. When logs carry the same trace ID as the trace, you can jump from a slow request straight to the exact log lines it produced. OpenTelemetry adds this context for you.</p>
+
+<h2 id="the-building-blocks">The building blocks</h2>
+<ul>
+  <li><strong>API and SDK:</strong> libraries for each language (Java, Go, Python, .NET, Node.js and others) that create spans, metrics and logs inside your application.</li>
+  <li><strong>Instrumentation libraries:</strong> ready-made instrumentation for popular frameworks, HTTP clients and databases. <strong>Auto-instrumentation</strong> agents can add this without code changes in several languages.</li>
+  <li><strong>OTLP:</strong> the OpenTelemetry Protocol, the standard wire format for sending telemetry.</li>
+  <li><strong>The Collector:</strong> a standalone service that receives, processes and exports telemetry. This is the heart of most production setups.</li>
+</ul>
+
+<h2 id="why-you-want-the-collector">Why you want the Collector</h2>
+<figure class="diagram"><div class="scroll"><svg viewBox="0 0 760 330" role="img" aria-label="Applications send telemetry over OTLP to the OpenTelemetry Collector, which receives, processes and exports metrics to Prometheus, traces to Jaeger or Tempo and logs to Loki" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" xmlns="http://www.w3.org/2000/svg"><title>Applications send telemetry over OTLP to the OpenTelemetry Collector, which receives, processes and exports metrics to Prometheus, traces to Jaeger or Tempo and logs to Loki</title><defs><marker id="otel-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b2a45"/></marker><marker id="otel-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c8102e"/></marker><marker id="otel-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f8a4c"/></marker><marker id="otel-ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#29abe2"/></marker></defs><text x="80" y="24" font-size="13.5" fill="#0b2a45" text-anchor="middle" font-weight="700">Your services</text><rect x="10" y="40" width="140" height="62" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="80.0" y="67" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">checkout</text><text x="80.0" y="84" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Java · OTel SDK</text><line x1="152" y1="71" x2="196" y2="150" stroke="#29abe2" stroke-width="1.8" marker-end="url(#otel-ahc)"/><rect x="10" y="120" width="140" height="62" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="80.0" y="147" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">cart</text><text x="80.0" y="164" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Python · OTel SDK</text><line x1="152" y1="151" x2="196" y2="150" stroke="#29abe2" stroke-width="1.8" marker-end="url(#otel-ahc)"/><rect x="10" y="200" width="140" height="62" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="80.0" y="227" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">payments</text><text x="80.0" y="244" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Go · OTel SDK</text><line x1="152" y1="231" x2="196" y2="150" stroke="#29abe2" stroke-width="1.8" marker-end="url(#otel-ahc)"/><text x="174" y="110" font-size="11.5" fill="#29abe2" text-anchor="middle" font-weight="700">OTLP</text><rect x="200" y="40" width="340" height="230" rx="8" fill="#eaf6fc" stroke="#29abe2" stroke-width="1.5"/><image href="/assets/logos/opentelemetry.svg" x="214" y="52" width="30" height="30" preserveAspectRatio="xMidYMid meet"/><text x="252" y="73" font-size="15" fill="#0b2a45" text-anchor="start" font-weight="700">OpenTelemetry Collector</text><rect x="214" y="100" width="96" height="150" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="262.0" y="126" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">Receivers</text><text x="262.0" y="143" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">otlp</text><line x1="311" y1="175" x2="321" y2="175" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#otel-ah)"/><rect x="322" y="100" width="96" height="150" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="370.0" y="126" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">Processors</text><text x="370.0" y="143" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">memory_limiter</text><text x="370.0" y="159" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">resource</text><text x="370.0" y="175" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">batch</text><line x1="419" y1="175" x2="429" y2="175" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#otel-ah)"/><rect x="430" y="100" width="96" height="150" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="478.0" y="126" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">Exporters</text><text x="478.0" y="143" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">prometheus</text><text x="478.0" y="159" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">otlp (traces)</text><text x="478.0" y="175" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">loki</text><line x1="542" y1="150" x2="586" y2="71" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#otel-ah)"/><rect x="590" y="40" width="160" height="62" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><image href="/assets/logos/prometheus.svg" x="600" y="56" width="30" height="30" preserveAspectRatio="xMidYMid meet"/><text x="640" y="68" font-size="13" fill="#0b2a45" text-anchor="start" font-weight="700">Prometheus</text><text x="640" y="85" font-size="11.5" fill="#6b7c8f" text-anchor="start" font-weight="400">metrics</text><line x1="542" y1="150" x2="586" y2="151" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#otel-ah)"/><rect x="590" y="120" width="160" height="62" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><image href="/assets/logos/jaeger.svg" x="600" y="136" width="30" height="30" preserveAspectRatio="xMidYMid meet"/><text x="640" y="148" font-size="13" fill="#0b2a45" text-anchor="start" font-weight="700">Jaeger / Tempo</text><text x="640" y="165" font-size="11.5" fill="#6b7c8f" text-anchor="start" font-weight="400">traces</text><line x1="542" y1="150" x2="586" y2="231" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#otel-ah)"/><rect x="590" y="200" width="160" height="62" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><image href="/assets/logos/grafana.svg" x="600" y="216" width="30" height="30" preserveAspectRatio="xMidYMid meet"/><text x="640" y="228" font-size="13" fill="#0b2a45" text-anchor="start" font-weight="700">Grafana Loki</text><text x="640" y="245" font-size="11.5" fill="#6b7c8f" text-anchor="start" font-weight="400">logs</text><text x="380" y="302" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400" font-style="italic">Change backends by editing Collector config, not application code</text></svg></div><figcaption>Instrument once with OpenTelemetry, then route each signal to the backend of your choice.</figcaption></figure>
+<p>Applications can send data straight to a backend, but routing everything through the Collector gives you:</p>
+<ul>
+  <li><strong>Decoupling:</strong> change backends by editing Collector config, not application code.</li>
+  <li><strong>Processing:</strong> batching, retries, filtering noisy data, adding resource attributes such as environment and cluster, and removing sensitive fields.</li>
+  <li><strong>Sampling:</strong> keep all error traces but only a fraction of successful ones, to control cost.</li>
+  <li><strong>Fan-out:</strong> send the same data to more than one destination, which is useful during vendor migrations.</li>
+</ul>
+<p>A Collector pipeline has three stages: <strong>receivers</strong> (data in), <strong>processors</strong> (transform) and <strong>exporters</strong> (data out).</p>
+
+<h2 id="a-minimal-collector-configuration">A minimal Collector configuration</h2>
+<p>This example receives OTLP data from applications and sends traces to Jaeger (or Tempo), metrics to Prometheus and logs to Loki:</p>
+<pre><code>receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 80
+  batch: {}
+  resource:
+    attributes:
+      - key: deployment.environment
+        value: production
+        action: upsert
+
+exporters:
+  otlp/traces:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: 0.0.0.0:8889
+  otlphttp/logs:
+    endpoint: http://loki:3100/otlp
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, resource, batch]
+      exporters: [otlp/traces]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, resource, batch]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, resource, batch]
+      exporters: [otlphttp/logs]</code></pre>
+
+<h2 id="instrumenting-an-application">Instrumenting an application</h2>
+<p>The fastest start is auto-instrumentation. For a Python service, for example:</p>
+<pre><code>pip install opentelemetry-distro opentelemetry-exporter-otlp
+opentelemetry-bootstrap -a install
+
+export OTEL_SERVICE_NAME=checkout
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+opentelemetry-instrument python app.py</code></pre>
+<p>Your HTTP endpoints, outgoing requests and database calls now produce traces and metrics without any code changes. Add manual spans later for important business operations, such as "calculate price" or "reserve stock".</p>
+<p>On Kubernetes, the <strong>OpenTelemetry Operator</strong> can inject auto-instrumentation into pods through an annotation, and manage Collectors for you.</p>
+
+<h2 id="best-practices-from-day-one">Best practices from day one</h2>
+<ul>
+  <li><strong>Name services consistently</strong> with <code>service.name</code> and set <code>deployment.environment</code>. Good resource attributes make every query easier.</li>
+  <li><strong>Follow semantic conventions</strong> for attribute names (for example <code>http.request.method</code>), so dashboards and tools work out of the box.</li>
+  <li><strong>Watch cardinality.</strong> Never put user IDs, request IDs or full URLs into metric labels. They belong in traces and logs.</li>
+  <li><strong>Sample deliberately.</strong> Tail-based sampling in the Collector lets you keep slow and failed requests while dropping routine ones.</li>
+  <li><strong>Scrub sensitive data</strong> in the Collector before it leaves your network.</li>
+</ul>
+
+<h2 id="a-sensible-adoption-path">A sensible adoption path</h2>
+<ol>
+  <li>Deploy a Collector and send its output to your existing tools.</li>
+  <li>Enable auto-instrumentation on one or two critical services.</li>
+  <li>Connect logs to traces through trace IDs.</li>
+  <li>Build dashboards and SLOs on the new signals, then roll out service by service.</li>
+</ol>
+<p>OpenTelemetry has a learning curve, but it pays back quickly: one standard way to instrument everything, and the freedom to choose and change your observability backend without rewriting code.</p>
+
+        <div class="callout">
+          <h3 style="margin-top:0">Need help with observability?</h3>
+          <p>Jarvix helps teams design, build and run this in production. See our <a href="/services.html#observability">Observability</a> services or <a href="/contact/">book a consultation</a>.</p>
+        </div>
+
+        <h3>More from the blog</h3>
+        <ul>
+          <li><a href="/blog/terraform-vs-opentofu/">Terraform vs OpenTofu: Differences, Licensing and How to Choose</a></li>
+          <li><a href="/blog/ai-agents-for-incident-analysis/">Using AI Agents for Incident Analysis: Architecture and Guardrails</a></li>
+          <li><a href="/blog/cloud-migration-strategies-7-rs/">On-Prem to Cloud Migration: The 7 Rs Explained</a></li>
+        </ul>
+      </article>
+      <aside class="post-aside">
+        <div class="card">
+          <h4>On this page</h4>
+          <ul class="toc">
+            <li><a href="#what-problem-does-opentelemetry-solve">What problem does OpenTelemetry solve?</a></li>
+            <li><a href="#the-three-main-signals">The three main signals</a></li>
+            <li><a href="#the-building-blocks">The building blocks</a></li>
+            <li><a href="#why-you-want-the-collector">Why you want the Collector</a></li>
+            <li><a href="#a-minimal-collector-configuration">A minimal Collector configuration</a></li>
+            <li><a href="#instrumenting-an-application">Instrumenting an application</a></li>
+            <li><a href="#best-practices-from-day-one">Best practices from day one</a></li>
+            <li><a href="#a-sensible-adoption-path">A sensible adoption path</a></li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top:20px;border-top-color:var(--red)">
+          <h4>Work with us</h4>
+          <p style="font-size:.95rem">Get help with Observability from senior engineers.</p>
+          <a class="btn" href="/contact/" style="padding:10px 18px;font-size:.95rem">Book a consultation</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/assets/logo.png" alt="Jarvix">
+        <p style="color:var(--navy);font-weight:600;margin-bottom:.4em">Engineering at the intersection of cloud and AI</p>
+        <p>Cloud-native platform engineering, DevOps, SRE,<br>observability, AI and MLOps consulting.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+        <a href="/contact/">Contact</a>
+        <a href="/privacy/">Privacy policy</a>
+      </div>
+      <div>
+        <h4>Office</h4>
+        <p>Jarvix Private Limited<br>Pune, Maharashtra,<br>India - 411036</p>
+        <a href="mailto:contact@jarvix.in">contact@jarvix.in</a>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Jarvix Private Limited. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>

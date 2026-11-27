@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reducing Alert Fatigue: A Practical Guide for On-Call Teams | Jarvix Blog</title>
+  <meta name="description" content="Too many alerts make on-call teams miss the ones that matter. Learn how to audit your alerts, alert on symptoms and SLOs, route properly and keep alerting healthy.">
+  <link rel="canonical" href="https://jarvix.in/blog/reducing-alert-fatigue/">
+  <meta property="og:title" content="Reducing Alert Fatigue: A Practical Guide for On-Call Teams | Jarvix Blog">
+  <meta property="og:description" content="Too many alerts make on-call teams miss the ones that matter. Learn how to audit your alerts, alert on symptoms and SLOs, route properly and keep alerting healthy.">
+  <meta property="og:url" content="https://jarvix.in/blog/reducing-alert-fatigue/">
+  <meta property="og:image" content="https://jarvix.in/assets/logo.png">
+  <meta property="og:type" content="article">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Reducing Alert Fatigue: A Practical Guide for On-Call Teams", "description": "Too many alerts make on-call teams miss the ones that matter. Learn how to audit your alerts, alert on symptoms and SLOs, route properly and keep alerting healthy.", "datePublished": "2026-10-27", "dateModified": "2026-10-27", "author": {"@type": "Organization", "name": "Jarvix Engineering", "url": "https://jarvix.in"}, "publisher": {"@type": "Organization", "name": "Jarvix Private Limited", "logo": {"@type": "ImageObject", "url": "https://jarvix.in/assets/logo.png"}}, "mainEntityOfPage": "https://jarvix.in/blog/reducing-alert-fatigue/", "keywords": "SRE, Observability, On-Call"}</script>
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a href="/"><img src="/assets/logo.png" alt="Jarvix"></a>
+    <input type="checkbox" id="menu-toggle" aria-label="Toggle menu">
+    <label for="menu-toggle" class="menu-btn" aria-hidden="true">&#9776;</label>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/services.html">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/blog/" aria-current="page">Blog</a>
+      <a href="/contact/" class="btn">Contact us</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="eyebrow"><a href="/blog/" style="color:inherit;text-decoration:none">Blog</a> · SRE</div>
+      <h1 style="font-size:clamp(1.9rem,4.2vw,2.8rem);max-width:900px">Reducing Alert Fatigue: A Practical Guide for On-Call Teams</h1>
+      <p class="meta">By Jarvix Engineering · <time datetime="2026-10-27">27 October 2026</time> · 5 min read</p>
+      <div class="tools"><span class="tools-label">Tools covered</span><span><img src="/assets/logos/prometheus.svg" alt="" width="20" height="20">Prometheus</span><span><img src="/assets/logos/grafana.svg" alt="" width="20" height="20">Grafana</span><span><img src="/assets/logos/pagerduty.svg" alt="" width="20" height="20">PagerDuty</span><span><img src="/assets/logos/slack.svg" alt="" width="20" height="20">Slack</span></div>
+    </div>
+  </section>
+
+  <section style="padding-top:56px">
+    <div class="wrap post-layout">
+      <article class="article">
+<p><strong>Alert fatigue</strong> happens when engineers receive so many alerts, many of them unimportant or false, that they start to ignore them. It is one of the most common and most damaging problems in operations. It burns out on-call engineers, slows down incident response, and eventually leads to a real outage being missed because it looked like just another noisy page.</p>
+<p>The good news is that alert fatigue is fixable with a methodical approach.</p>
+
+<h2 id="signs-your-team-has-alert-fatigue">Signs your team has alert fatigue</h2>
+<ul>
+  <li>On-call engineers are paged several times a night, most nights.</li>
+  <li>Many alerts resolve on their own before anyone acts.</li>
+  <li>People acknowledge alerts without investigating them.</li>
+  <li>The same alert fires repeatedly and nobody fixes the cause.</li>
+  <li>There are alert channels that everyone has muted.</li>
+  <li>Customers report problems before your monitoring does.</li>
+</ul>
+
+<h2 id="the-golden-rule-every-page-must-be-actionable">The golden rule: every page must be actionable</h2>
+<p>A page should mean "a human needs to do something now to protect users". If the right response to an alert is "ignore it" or "wait and see", it should not wake anybody up. Ask three questions of every alert:</p>
+<ol>
+  <li><strong>Is it urgent?</strong> Does it need attention within minutes, or can it wait until working hours?</li>
+  <li><strong>Is it actionable?</strong> Is there something the responder can actually do?</li>
+  <li><strong>Does it affect users?</strong> Or is it a cause that may never become a problem?</li>
+</ol>
+<p>Only alerts that pass all three should page. Everything else becomes a ticket, a dashboard panel or nothing at all.</p>
+
+<figure class="diagram"><div class="scroll"><svg viewBox="0 0 760 330" role="img" aria-label="Decision flow: an alert should page someone only if it is urgent, actionable and affects users; otherwise it becomes a ticket, is automated or deleted, or stays on a dashboard" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" xmlns="http://www.w3.org/2000/svg"><title>Decision flow: an alert should page someone only if it is urgent, actionable and affects users; otherwise it becomes a ticket, is automated or deleted, or stays on a dashboard</title><defs><marker id="af-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b2a45"/></marker><marker id="af-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c8102e"/></marker><marker id="af-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f8a4c"/></marker><marker id="af-ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#29abe2"/></marker></defs><rect x="10" y="60" width="110" height="70" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="65.0" y="118" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Alert fires</text><image href="/assets/logos/prometheus.svg" x="50" y="70" width="28" height="28" preserveAspectRatio="xMidYMid meet"/><line x1="122" y1="95" x2="158" y2="95" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#af-ah)"/><polygon points="220,57.0 280.0,95 220,133.0 160.0,95" fill="#eaf6fc" stroke="#29abe2" stroke-width="1.5"/><text x="220" y="100" font-size="13.5" fill="#0b2a45" text-anchor="middle" font-weight="700">Urgent?</text><line x1="281" y1="95" x2="316" y2="95" stroke="#1f8a4c" stroke-width="1.8" marker-end="url(#af-ahg)"/><text x="300" y="87" font-size="11.5" fill="#1f8a4c" text-anchor="middle" font-weight="600">yes</text><line x1="220" y1="134" x2="220" y2="196" stroke="#c8102e" stroke-width="1.8" marker-end="url(#af-ahr)"/><text x="234" y="168" font-size="11.5" fill="#c8102e" text-anchor="middle" font-weight="600">no</text><polygon points="380,57.0 440.0,95 380,133.0 320.0,95" fill="#eaf6fc" stroke="#29abe2" stroke-width="1.5"/><text x="380" y="100" font-size="13.5" fill="#0b2a45" text-anchor="middle" font-weight="700">Actionable?</text><line x1="441" y1="95" x2="476" y2="95" stroke="#1f8a4c" stroke-width="1.8" marker-end="url(#af-ahg)"/><text x="460" y="87" font-size="11.5" fill="#1f8a4c" text-anchor="middle" font-weight="600">yes</text><line x1="380" y1="134" x2="380" y2="196" stroke="#c8102e" stroke-width="1.8" marker-end="url(#af-ahr)"/><text x="394" y="168" font-size="11.5" fill="#c8102e" text-anchor="middle" font-weight="600">no</text><polygon points="540,57.0 600.0,95 540,133.0 480.0,95" fill="#eaf6fc" stroke="#29abe2" stroke-width="1.5"/><text x="540" y="100" font-size="13.5" fill="#0b2a45" text-anchor="middle" font-weight="700">Affects users?</text><line x1="601" y1="95" x2="646" y2="95" stroke="#1f8a4c" stroke-width="1.8" marker-end="url(#af-ahg)"/><text x="620" y="87" font-size="11.5" fill="#1f8a4c" text-anchor="middle" font-weight="600">yes</text><line x1="540" y1="134" x2="540" y2="196" stroke="#c8102e" stroke-width="1.8" marker-end="url(#af-ahr)"/><text x="554" y="168" font-size="11.5" fill="#c8102e" text-anchor="middle" font-weight="600">no</text><rect x="650" y="50" width="100" height="90" rx="8" fill="#e9f7ef" stroke="#a7d9bb" stroke-width="1.5"/><text x="700.0" y="110" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Page</text><text x="700.0" y="127" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">on-call</text><image href="/assets/logos/pagerduty.svg" x="686" y="60" width="26" height="26" preserveAspectRatio="xMidYMid meet"/><rect x="150" y="200" width="140" height="80" rx="8" fill="#fdecef" stroke="#f0b6c0" stroke-width="1.5"/><text x="220.0" y="226" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Ticket</text><text x="220.0" y="243" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">fix in working</text><text x="220.0" y="259" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">hours</text><rect x="310" y="200" width="140" height="80" rx="8" fill="#fdecef" stroke="#f0b6c0" stroke-width="1.5"/><text x="380.0" y="226" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Automate</text><text x="380.0" y="243" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">or delete</text><text x="380.0" y="259" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">the alert</text><rect x="470" y="200" width="140" height="80" rx="8" fill="#fdecef" stroke="#f0b6c0" stroke-width="1.5"/><text x="540.0" y="226" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Dashboard</text><text x="540.0" y="243" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">or low-priority</text><text x="540.0" y="259" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">notification</text><text x="380" y="314" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400" font-style="italic">Review every page weekly: tune, automate or delete anything that was not actionable</text></svg></div><figcaption>Only urgent, actionable, user-facing problems should wake someone up.</figcaption></figure>
+
+<h2 id="step-1-audit-what-you-have">Step 1: Audit what you have</h2>
+<p>Export the last 30 to 90 days of alert history from your paging tool and, for each alert rule, record:</p>
+<ul>
+  <li>How often it fired.</li>
+  <li>How often it led to real action.</li>
+  <li>How often it auto-resolved.</li>
+  <li>The time of day it fired.</li>
+</ul>
+<p>You will usually find that a small number of noisy rules produce most of the pages. Fixing or deleting those gives the quickest relief.</p>
+
+<h2 id="step-2-alert-on-symptoms-not-causes">Step 2: Alert on symptoms, not causes</h2>
+<p>Cause-based alerts such as "CPU above 80%" or "disk I/O high" fire often and rarely mean users are affected. Symptom-based alerts focus on what users experience:</p>
+<table>
+  <thead><tr><th>Cause-based (noisy)</th><th>Symptom-based (useful)</th></tr></thead>
+  <tbody>
+    <tr><td>CPU above 80% on a node</td><td>Checkout error rate above 2%</td></tr>
+    <tr><td>Pod restarted</td><td>p99 API latency above 1 second for 10 minutes</td></tr>
+    <tr><td>Queue length above 1,000</td><td>Orders not processed within 5 minutes</td></tr>
+  </tbody>
+</table>
+<p>Keep cause-based metrics on dashboards for diagnosis; just don't page on them by default. One exception: alerts that predict an imminent outage, such as a disk that will be full within four hours, are worth keeping.</p>
+
+<h2 id="step-3-use-slos-and-burn-rate-alerts">Step 3: Use SLOs and burn-rate alerts</h2>
+<p>Service level objectives (SLOs) give you a principled way to decide what is worth a page. Define what "good" looks like, for example "99.9% of requests succeed in under 300 ms over 30 days", then alert on how fast you are using up your <strong>error budget</strong>.</p>
+<p>Multi-window, multi-burn-rate alerts, popularised by the Google SRE Workbook, work well:</p>
+<ul>
+  <li><strong>Fast burn:</strong> page if you are consuming budget about 14 times faster than sustainable over both the last hour and the last 5 minutes. That is a serious, ongoing problem.</li>
+  <li><strong>Slow burn:</strong> open a ticket if you are consuming budget about 3 times faster than sustainable over the last day and the last 2 hours or so. That needs fixing, but not at 3 a.m.</li>
+</ul>
+<p>Burn-rate alerts ignore short blips and catch real degradation, which removes a large share of noise on their own.</p>
+
+<h2 id="step-4-tune-what-remains">Step 4: Tune what remains</h2>
+<ul>
+  <li><strong>Add durations.</strong> Require a condition to hold for several minutes (<code>for: 10m</code> in Prometheus) instead of firing on a single spike.</li>
+  <li><strong>Group and deduplicate.</strong> One incident should produce one page, not fifty. Group alerts by service or cluster in Alertmanager or your paging tool.</li>
+  <li><strong>Add inhibition rules.</strong> If a whole cluster is down, suppress the hundreds of per-service alerts it causes.</li>
+  <li><strong>Use severity levels consistently.</strong> For example: critical pages someone, warning creates a ticket, info goes to a channel.</li>
+</ul>
+
+<h2 id="step-5-make-every-alert-easy-to-act-on">Step 5: Make every alert easy to act on</h2>
+<p>Each alert should include a clear summary of user impact, a link to the relevant dashboard and a link to a <strong>runbook</strong> with the first diagnostic steps. An engineer woken at night should not have to guess what an alert means.</p>
+<pre><code>- alert: CheckoutHighErrorRate
+  expr: |
+    sum(rate(http_requests_total{service="checkout",code=~"5.."}[5m]))
+      / sum(rate(http_requests_total{service="checkout"}[5m])) &gt; 0.02
+  for: 10m
+  labels:
+    severity: critical
+    team: payments
+  annotations:
+    summary: "Checkout error rate above 2% for 10 minutes"
+    dashboard: "https://grafana.example.com/d/checkout"
+    runbook: "https://runbooks.example.com/checkout-errors"</code></pre>
+
+<h2 id="step-6-route-to-the-right-people">Step 6: Route to the right people</h2>
+<p>Alerts should go to the team that owns the service, not to a central channel that everyone watches and nobody owns. Use ownership labels on alerts and map them to on-call schedules.</p>
+
+<h2 id="step-7-keep-it-healthy">Step 7: Keep it healthy</h2>
+<p>Alerting decays over time unless it is maintained. Build these habits:</p>
+<ul>
+  <li><strong>Weekly on-call review:</strong> go through every page from the past week. Was it actionable? Should it be tuned, automated or deleted?</li>
+  <li><strong>Track pages per shift</strong> as a team health metric. A common target is no more than two incidents per on-call shift.</li>
+  <li><strong>Fix or delete repeat offenders</strong> instead of living with them.</li>
+  <li><strong>Automate known fixes</strong> where it is safe, so humans only handle the novel problems.</li>
+</ul>
+
+<h2 id="summary">Summary</h2>
+<p>Reducing alert fatigue is less about tools and more about discipline: page only on urgent, actionable, user-facing problems; alert on symptoms and SLO burn rates; give every alert context and an owner; and review alerts regularly. The result is an on-call rotation people can sustain, and faster responses when something really does go wrong.</p>
+
+        <div class="callout">
+          <h3 style="margin-top:0">Need help with site reliability engineering?</h3>
+          <p>Jarvix helps teams design, build and run this in production. See our <a href="/services.html#sre">Site Reliability Engineering</a> services or <a href="/contact/">book a consultation</a>.</p>
+        </div>
+
+        <h3>More from the blog</h3>
+        <ul>
+          <li><a href="/blog/terraform-vs-opentofu/">Terraform vs OpenTofu: Differences, Licensing and How to Choose</a></li>
+          <li><a href="/blog/ai-agents-for-incident-analysis/">Using AI Agents for Incident Analysis: Architecture and Guardrails</a></li>
+          <li><a href="/blog/cloud-migration-strategies-7-rs/">On-Prem to Cloud Migration: The 7 Rs Explained</a></li>
+        </ul>
+      </article>
+      <aside class="post-aside">
+        <div class="card">
+          <h4>On this page</h4>
+          <ul class="toc">
+            <li><a href="#signs-your-team-has-alert-fatigue">Signs your team has alert fatigue</a></li>
+            <li><a href="#the-golden-rule-every-page-must-be-actionable">The golden rule: every page must be actionable</a></li>
+            <li><a href="#step-1-audit-what-you-have">Step 1: Audit what you have</a></li>
+            <li><a href="#step-2-alert-on-symptoms-not-causes">Step 2: Alert on symptoms, not causes</a></li>
+            <li><a href="#step-3-use-slos-and-burn-rate-alerts">Step 3: Use SLOs and burn-rate alerts</a></li>
+            <li><a href="#step-4-tune-what-remains">Step 4: Tune what remains</a></li>
+            <li><a href="#step-5-make-every-alert-easy-to-act-on">Step 5: Make every alert easy to act on</a></li>
+            <li><a href="#step-6-route-to-the-right-people">Step 6: Route to the right people</a></li>
+            <li><a href="#step-7-keep-it-healthy">Step 7: Keep it healthy</a></li>
+            <li><a href="#summary">Summary</a></li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top:20px;border-top-color:var(--red)">
+          <h4>Work with us</h4>
+          <p style="font-size:.95rem">Get help with Site Reliability Engineering from senior engineers.</p>
+          <a class="btn" href="/contact/" style="padding:10px 18px;font-size:.95rem">Book a consultation</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/assets/logo.png" alt="Jarvix">
+        <p style="color:var(--navy);font-weight:600;margin-bottom:.4em">Engineering at the intersection of cloud and AI</p>
+        <p>Cloud-native platform engineering, DevOps, SRE,<br>observability, AI and MLOps consulting.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+        <a href="/contact/">Contact</a>
+        <a href="/privacy/">Privacy policy</a>
+      </div>
+      <div>
+        <h4>Office</h4>
+        <p>Jarvix Private Limited<br>Pune, Maharashtra,<br>India - 411036</p>
+        <a href="mailto:contact@jarvix.in">contact@jarvix.in</a>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Jarvix Private Limited. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>

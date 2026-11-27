@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>On-Prem to Cloud Migration: The 7 Rs Explained | Jarvix Blog</title>
+  <meta name="description" content="Rehost, replatform, refactor and more. A clear guide to the 7 Rs of cloud migration, when to use each strategy, and how to plan a migration in waves.">
+  <link rel="canonical" href="https://jarvix.in/blog/cloud-migration-strategies-7-rs/">
+  <meta property="og:title" content="On-Prem to Cloud Migration: The 7 Rs Explained | Jarvix Blog">
+  <meta property="og:description" content="Rehost, replatform, refactor and more. A clear guide to the 7 Rs of cloud migration, when to use each strategy, and how to plan a migration in waves.">
+  <meta property="og:url" content="https://jarvix.in/blog/cloud-migration-strategies-7-rs/">
+  <meta property="og:image" content="https://jarvix.in/assets/logo.png">
+  <meta property="og:type" content="article">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "On-Prem to Cloud Migration: The 7 Rs Explained", "description": "Rehost, replatform, refactor and more. A clear guide to the 7 Rs of cloud migration, when to use each strategy, and how to plan a migration in waves.", "datePublished": "2026-11-10", "dateModified": "2026-11-10", "author": {"@type": "Organization", "name": "Jarvix Engineering", "url": "https://jarvix.in"}, "publisher": {"@type": "Organization", "name": "Jarvix Private Limited", "logo": {"@type": "ImageObject", "url": "https://jarvix.in/assets/logo.png"}}, "mainEntityOfPage": "https://jarvix.in/blog/cloud-migration-strategies-7-rs/", "keywords": "Cloud Migration, AWS, Azure, GCP"}</script>
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a href="/"><img src="/assets/logo.png" alt="Jarvix"></a>
+    <input type="checkbox" id="menu-toggle" aria-label="Toggle menu">
+    <label for="menu-toggle" class="menu-btn" aria-hidden="true">&#9776;</label>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/services.html">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/blog/" aria-current="page">Blog</a>
+      <a href="/contact/" class="btn">Contact us</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="eyebrow"><a href="/blog/" style="color:inherit;text-decoration:none">Blog</a> · Cloud Migration</div>
+      <h1 style="font-size:clamp(1.9rem,4.2vw,2.8rem);max-width:900px">On-Prem to Cloud Migration: The 7 Rs Explained</h1>
+      <p class="meta">By Jarvix Engineering · <time datetime="2026-11-10">10 November 2026</time> · 5 min read</p>
+      
+    </div>
+  </section>
+
+  <section style="padding-top:56px">
+    <div class="wrap post-layout">
+      <article class="article">
+<p>Moving from on-premises data centres to the cloud is rarely a single decision. A typical estate has hundreds of applications, and each one deserves its own migration strategy. The <strong>7 Rs</strong> framework gives you a shared vocabulary for those decisions.</p>
+<p>The idea started as Gartner's "5 Rs" in 2010. AWS later expanded it to six and then seven strategies, which is the version most teams use today. Azure and Google Cloud describe very similar options under slightly different names.</p>
+
+<h2 id="the-7-rs-at-a-glance">The 7 Rs at a glance</h2>
+<table>
+  <thead><tr><th>Strategy</th><th>What it means</th><th>Effort</th><th>Cloud benefit</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Retire</strong></td><td>Switch the application off</td><td>Very low</td><td>Removes cost entirely</td></tr>
+    <tr><td><strong>Retain</strong></td><td>Keep it on-premises for now</td><td>None</td><td>None, for now</td></tr>
+    <tr><td><strong>Rehost</strong></td><td>"Lift and shift" servers as they are</td><td>Low</td><td>Low to medium</td></tr>
+    <tr><td><strong>Relocate</strong></td><td>Move a whole platform, such as VMware, without changing it</td><td>Low</td><td>Low to medium</td></tr>
+    <tr><td><strong>Replatform</strong></td><td>"Lift and reshape": small changes to use managed services</td><td>Medium</td><td>Medium to high</td></tr>
+    <tr><td><strong>Repurchase</strong></td><td>Replace with a SaaS product</td><td>Medium</td><td>High</td></tr>
+    <tr><td><strong>Refactor</strong></td><td>Re-architect for cloud-native services</td><td>High</td><td>Highest</td></tr>
+  </tbody>
+</table>
+
+<h2 id="each-strategy-in-more-detail">Each strategy in more detail</h2>
+<figure class="diagram"><div class="scroll"><svg viewBox="0 0 760 300" role="img" aria-label="The 7 Rs of cloud migration ordered from least to most change, with relative effort and cloud benefit for each" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" xmlns="http://www.w3.org/2000/svg"><title>The 7 Rs of cloud migration ordered from least to most change, with relative effort and cloud benefit for each</title><defs><marker id="rs-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b2a45"/></marker><marker id="rs-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c8102e"/></marker><marker id="rs-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f8a4c"/></marker><marker id="rs-ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#29abe2"/></marker></defs><line x1="30" y1="28" x2="730" y2="28" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#rs-ah)"/><text x="30" y="18" font-size="12" fill="#6b7c8f" text-anchor="start" font-weight="600">Less change</text><text x="726" y="18" font-size="12" fill="#6b7c8f" text-anchor="end" font-weight="600">More change</text><rect x="10" y="44" width="98" height="220" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="59.0" y="70" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Retire</text><text x="59.0" y="88" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">switch off</text><text x="59.0" y="122" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Effort</text><rect x="22" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="37" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="52" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="67" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="82" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><text x="59.0" y="184" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Benefit</text><rect x="22" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="37" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="52" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="67" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="82" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><text x="59.0" y="250" font-size="10.5" fill="#1f8a4c" text-anchor="middle" font-weight="600">removes cost</text><rect x="114" y="44" width="98" height="220" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="163.0" y="70" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Retain</text><text x="163.0" y="88" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">stay on-prem</text><text x="163.0" y="122" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Effort</text><rect x="126" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="141" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="156" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="171" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="186" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><text x="163.0" y="184" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Benefit</text><rect x="126" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="141" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="156" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="171" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="186" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><text x="163.0" y="250" font-size="10.5" fill="#6b7c8f" text-anchor="middle" font-weight="600">revisit later</text><rect x="218" y="44" width="98" height="220" rx="8" fill="#eaf6fc" stroke="#29abe2" stroke-width="1.5"/><text x="267.0" y="70" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Rehost</text><text x="267.0" y="88" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">lift &amp; shift</text><text x="267.0" y="122" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Effort</text><rect x="230" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="245" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="260" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="275" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="290" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><text x="267.0" y="184" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Benefit</text><rect x="230" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="245" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="260" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="275" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="290" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="322" y="44" width="98" height="220" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="371.0" y="70" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Relocate</text><text x="371.0" y="88" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">move platform</text><text x="371.0" y="122" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Effort</text><rect x="334" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="349" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="364" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="379" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="394" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><text x="371.0" y="184" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Benefit</text><rect x="334" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="349" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="364" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="379" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="394" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="426" y="44" width="98" height="220" rx="8" fill="#eaf6fc" stroke="#29abe2" stroke-width="1.5"/><text x="475.0" y="70" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Replatform</text><text x="475.0" y="88" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">lift &amp; reshape</text><text x="475.0" y="122" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Effort</text><rect x="438" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="453" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="468" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="483" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="498" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><text x="475.0" y="184" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Benefit</text><rect x="438" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="453" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="468" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="483" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="498" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="530" y="44" width="98" height="220" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="579.0" y="70" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Repurchase</text><text x="579.0" y="88" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">move to SaaS</text><text x="579.0" y="122" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Effort</text><rect x="542" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="557" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="572" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="587" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="602" y="132" width="12" height="12" rx="2" fill="#e4eaf0"/><text x="579.0" y="184" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Benefit</text><rect x="542" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="557" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="572" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="587" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="602" y="194" width="12" height="12" rx="2" fill="#e4eaf0"/><rect x="634" y="44" width="98" height="220" rx="8" fill="#eaf6fc" stroke="#29abe2" stroke-width="1.5"/><text x="683.0" y="70" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Refactor</text><text x="683.0" y="88" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">re-architect</text><text x="683.0" y="122" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Effort</text><rect x="646" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="661" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="676" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="691" y="132" width="12" height="12" rx="2" fill="#c8102e"/><rect x="706" y="132" width="12" height="12" rx="2" fill="#c8102e"/><text x="683.0" y="184" font-size="11.5" fill="#0b2a45" text-anchor="middle" font-weight="600">Benefit</text><rect x="646" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="661" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="676" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="691" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><rect x="706" y="194" width="12" height="12" rx="2" fill="#1f8a4c"/><text x="380" y="290" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400" font-style="italic">Highlighted: the three most common strategies</text></svg></div><figcaption>Relative effort and cloud benefit of each migration strategy (indicative, varies by application).</figcaption></figure>
+<h3>1. Retire</h3>
+<p>Every discovery exercise finds applications that nobody uses, or that duplicate another system. Switching them off is the cheapest migration of all. It is common to find a meaningful share of an estate can be retired.</p>
+
+<h3>2. Retain</h3>
+<p>Some workloads should stay where they are for now: systems with strict data-residency rules, mainframes that are too risky to touch, hardware-dependent applications, or anything due to be replaced soon. Retaining is a valid decision as long as it is deliberate and revisited.</p>
+
+<h3>3. Rehost (lift and shift)</h3>
+<p>Move virtual or physical servers to cloud virtual machines with no code changes, often using tools such as AWS Application Migration Service or Azure Migrate. It is fast and low risk, and a good option when you need to exit a data centre by a deadline. The downside is that you bring along your existing operational overhead, and costs can rise if you don't rightsize afterwards.</p>
+
+<h3>4. Relocate</h3>
+<p>Move an entire platform without changing the workloads on it, for example running your VMware estate on VMware Cloud on AWS or Azure VMware Solution. It suits large virtualised estates that need to move quickly, and can be a stepping stone to further modernisation.</p>
+
+<h3>5. Replatform (lift and reshape)</h3>
+<p>Make targeted changes to benefit from managed services without rewriting the application. Typical examples are moving a self-managed database to Amazon RDS or Azure SQL, containerising an application onto a managed Kubernetes service, or moving file storage to object storage. Replatforming often gives the best balance of effort and benefit.</p>
+
+<h3>6. Repurchase</h3>
+<p>Replace an application with a SaaS product: a self-hosted CRM with Salesforce, an email server with Microsoft 365, or a self-hosted CI server with a hosted CI service. Data migration and user training are the main challenges.</p>
+
+<h3>7. Refactor (re-architect)</h3>
+<p>Redesign the application to be cloud native: breaking a monolith into services, using serverless functions, event-driven designs and managed data services. This brings the biggest gains in scalability, resilience and speed of delivery, but needs the most time and skill. Reserve it for applications that are strategically important and actively developed.</p>
+
+<h2 id="how-to-choose-the-right-r">How to choose the right R</h2>
+<p>For each application, consider:</p>
+<ul>
+  <li><strong>Business value:</strong> is it core to how you make money, or a commodity?</li>
+  <li><strong>Pace of change:</strong> is it actively developed? Refactoring pays off for systems that change often.</li>
+  <li><strong>Technical health:</strong> is it well understood, documented and tested?</li>
+  <li><strong>Constraints:</strong> licensing, compliance, data residency, latency and hardware dependencies.</li>
+  <li><strong>Timeline:</strong> a data-centre exit date favours rehosting first and modernising later.</li>
+</ul>
+<p>A common pattern is to <strong>rehost or replatform first</strong> to meet a deadline, then <strong>refactor selectively</strong> once workloads are in the cloud and the team has built cloud skills.</p>
+
+<h2 id="planning-the-migration-in-waves">Planning the migration in waves</h2>
+<ol>
+  <li><strong>Discover:</strong> build an inventory of applications, servers, dependencies and owners. Dependency mapping is critical: applications that talk to each other heavily should usually move together.</li>
+  <li><strong>Assess and decide:</strong> assign one of the 7 Rs to each application and estimate cost and effort.</li>
+  <li><strong>Build the landing zone:</strong> accounts or subscriptions, networking, identity, security baselines, logging and cost controls, all as code.</li>
+  <li><strong>Pilot:</strong> migrate one or two low-risk applications end to end to prove the process and tooling.</li>
+  <li><strong>Migrate in waves:</strong> group applications by dependency and risk, with a rollback plan and a cut-over runbook for each wave.</li>
+  <li><strong>Optimise:</strong> rightsize, adopt autoscaling and savings plans or reserved capacity, and set up cost visibility.</li>
+</ol>
+
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+  <li><strong>Skipping discovery</strong> and finding hidden dependencies during cut-over.</li>
+  <li><strong>Lifting and shifting everything</strong> and then being surprised that the cloud bill is higher than the data centre.</li>
+  <li><strong>No landing zone</strong>, leading to inconsistent security and networking that is painful to fix later.</li>
+  <li><strong>Underestimating data migration</strong> time and bandwidth for large databases.</li>
+  <li><strong>Forgetting operations:</strong> monitoring, backup, incident response and cost management all change in the cloud.</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>The 7 Rs won't make your migration decisions for you, but they give everyone, from engineers to finance, a common language. Assess each application on its merits, move in well-planned waves, and treat the migration as the start of modernisation rather than the end.</p>
+
+        <div class="callout">
+          <h3 style="margin-top:0">Need help with cloud migration &amp; optimisation?</h3>
+          <p>Jarvix helps teams design, build and run this in production. See our <a href="/services.html#cloud">Cloud Migration &amp; Optimisation</a> services or <a href="/contact/">book a consultation</a>.</p>
+        </div>
+
+        <h3>More from the blog</h3>
+        <ul>
+          <li><a href="/blog/terraform-vs-opentofu/">Terraform vs OpenTofu: Differences, Licensing and How to Choose</a></li>
+          <li><a href="/blog/ai-agents-for-incident-analysis/">Using AI Agents for Incident Analysis: Architecture and Guardrails</a></li>
+          <li><a href="/blog/reducing-alert-fatigue/">Reducing Alert Fatigue: A Practical Guide for On-Call Teams</a></li>
+        </ul>
+      </article>
+      <aside class="post-aside">
+        <div class="card">
+          <h4>On this page</h4>
+          <ul class="toc">
+            <li><a href="#the-7-rs-at-a-glance">The 7 Rs at a glance</a></li>
+            <li><a href="#each-strategy-in-more-detail">Each strategy in more detail</a></li>
+            <li><a href="#how-to-choose-the-right-r">How to choose the right R</a></li>
+            <li><a href="#planning-the-migration-in-waves">Planning the migration in waves</a></li>
+            <li><a href="#common-pitfalls">Common pitfalls</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top:20px;border-top-color:var(--red)">
+          <h4>Work with us</h4>
+          <p style="font-size:.95rem">Get help with Cloud Migration &amp; Optimisation from senior engineers.</p>
+          <a class="btn" href="/contact/" style="padding:10px 18px;font-size:.95rem">Book a consultation</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/assets/logo.png" alt="Jarvix">
+        <p style="color:var(--navy);font-weight:600;margin-bottom:.4em">Engineering at the intersection of cloud and AI</p>
+        <p>Cloud-native platform engineering, DevOps, SRE,<br>observability, AI and MLOps consulting.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+        <a href="/contact/">Contact</a>
+        <a href="/privacy/">Privacy policy</a>
+      </div>
+      <div>
+        <h4>Office</h4>
+        <p>Jarvix Private Limited<br>Pune, Maharashtra,<br>India - 411036</p>
+        <a href="mailto:contact@jarvix.in">contact@jarvix.in</a>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Jarvix Private Limited. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>

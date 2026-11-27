@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Terraform Module Structure for Multi-Environment Setups | Jarvix Blog</title>
+  <meta name="description" content="A practical guide to structuring Terraform modules and environments: repository layout, module design rules, state separation and versioning, with examples you can adapt.">
+  <link rel="canonical" href="https://jarvix.in/blog/terraform-module-structure/">
+  <meta property="og:title" content="Terraform Module Structure for Multi-Environment Setups | Jarvix Blog">
+  <meta property="og:description" content="A practical guide to structuring Terraform modules and environments: repository layout, module design rules, state separation and versioning, with examples you can adapt.">
+  <meta property="og:url" content="https://jarvix.in/blog/terraform-module-structure/">
+  <meta property="og:image" content="https://jarvix.in/assets/logo.png">
+  <meta property="og:type" content="article">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Terraform Module Structure for Multi-Environment Setups", "description": "A practical guide to structuring Terraform modules and environments: repository layout, module design rules, state separation and versioning, with examples you can adapt.", "datePublished": "2026-09-15", "dateModified": "2026-09-15", "author": {"@type": "Organization", "name": "Jarvix Engineering", "url": "https://jarvix.in"}, "publisher": {"@type": "Organization", "name": "Jarvix Private Limited", "logo": {"@type": "ImageObject", "url": "https://jarvix.in/assets/logo.png"}}, "mainEntityOfPage": "https://jarvix.in/blog/terraform-module-structure/", "keywords": "Terraform, Infrastructure as Code, DevOps"}</script>
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a href="/"><img src="/assets/logo.png" alt="Jarvix"></a>
+    <input type="checkbox" id="menu-toggle" aria-label="Toggle menu">
+    <label for="menu-toggle" class="menu-btn" aria-hidden="true">&#9776;</label>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/services.html">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/blog/" aria-current="page">Blog</a>
+      <a href="/contact/" class="btn">Contact us</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="eyebrow"><a href="/blog/" style="color:inherit;text-decoration:none">Blog</a> · Terraform</div>
+      <h1 style="font-size:clamp(1.9rem,4.2vw,2.8rem);max-width:900px">Terraform Module Structure for Multi-Environment Setups</h1>
+      <p class="meta">By Jarvix Engineering · <time datetime="2026-09-15">15 September 2026</time> · 5 min read</p>
+      <div class="tools"><span class="tools-label">Tools covered</span><span><img src="/assets/logos/terraform.svg" alt="" width="20" height="20">Terraform</span><span><img src="/assets/logos/githubactions.svg" alt="" width="20" height="20">GitHub Actions</span></div>
+    </div>
+  </section>
+
+  <section style="padding-top:56px">
+    <div class="wrap post-layout">
+      <article class="article">
+<p>Terraform is easy to start with and surprisingly hard to scale. A single <code>main.tf</code> works for a proof of concept, but once you have dev, staging and production, several teams and a few hundred resources, structure becomes the difference between confident changes and nervous ones. This guide covers a layout that works well for most teams, and the reasoning behind it.</p>
+
+<h2 id="goals-of-a-good-structure">Goals of a good structure</h2>
+<ul>
+  <li><strong>Environments stay consistent.</strong> Staging should look like production, with differences that are explicit and small.</li>
+  <li><strong>Blast radius stays small.</strong> A mistake in one component or environment should not be able to break everything else.</li>
+  <li><strong>Code is reused, not copied.</strong> Common patterns live in modules, not in copy-pasted blocks.</li>
+  <li><strong>Changes are reviewable.</strong> A pull request should make it obvious what will change and where.</li>
+</ul>
+
+<h2 id="two-kinds-of-terraform-code">Two kinds of Terraform code</h2>
+<p>The most useful mental model is to separate <strong>modules</strong> from <strong>live configurations</strong>:</p>
+<ul>
+  <li><strong>Modules</strong> are reusable building blocks, such as a VPC, an EKS cluster or a Postgres database. They take inputs, create resources and return outputs. They never contain environment-specific values.</li>
+  <li><strong>Live configurations</strong> (sometimes called stacks or root modules) call modules with concrete values for a specific environment and region. Each one has its own state.</li>
+</ul>
+
+<h2 id="a-recommended-repository-layout">A recommended repository layout</h2>
+<figure class="diagram"><div class="scroll"><svg viewBox="0 0 760 400" role="img" aria-label="Reusable Terraform modules are called by separate live configurations for dev, staging and prod, each with its own remote state" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" xmlns="http://www.w3.org/2000/svg"><title>Reusable Terraform modules are called by separate live configurations for dev, staging and prod, each with its own remote state</title><defs><marker id="tf-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b2a45"/></marker><marker id="tf-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c8102e"/></marker><marker id="tf-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f8a4c"/></marker><marker id="tf-ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#29abe2"/></marker></defs><rect x="10" y="40" width="210" height="270" rx="8" fill="#eaf6fc" stroke="#29abe2" stroke-width="1.5"/><image href="/assets/logos/terraform.svg" x="24" y="52" width="26" height="26" preserveAspectRatio="xMidYMid meet"/><text x="58" y="71" font-size="15" fill="#0b2a45" text-anchor="start" font-weight="700">modules/</text><text x="115" y="96" font-size="11.5" fill="#6b7c8f" text-anchor="middle" font-weight="400">reusable · versioned</text><rect x="28" y="112" width="174" height="50" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="115.0" y="132" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">network</text><text x="115.0" y="149" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">VPC, subnets</text><rect x="28" y="174" width="174" height="50" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="115.0" y="194" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">eks-cluster</text><text x="115.0" y="211" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Kubernetes</text><rect x="28" y="236" width="174" height="50" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="115.0" y="256" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">postgres</text><text x="115.0" y="273" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">RDS + backups</text><text x="115" y="336" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400" font-style="italic">No environment values</text><text x="470" y="24" font-size="13.5" fill="#0b2a45" text-anchor="middle" font-weight="700">live/  (one root module per environment and component)</text><rect x="290" y="40" width="140" height="210" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="360" y="64" font-size="15" fill="#0b2a45" text-anchor="middle" font-weight="700">dev</text><rect x="302" y="78" width="116" height="44" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="360.0" y="96" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">network</text><text x="360.0" y="113" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">module v1.5.0</text><rect x="302" y="134" width="116" height="44" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="360.0" y="152" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">eks</text><text x="360.0" y="169" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">module v1.5.0</text><rect x="302" y="190" width="116" height="44" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="360.0" y="208" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">postgres</text><text x="360.0" y="225" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">module v1.5.0</text><line x1="360" y1="252" x2="360" y2="300" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#tf-ah)"/><rect x="300" y="304" width="120" height="54" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="360.0" y="325" font-size="12.5" fill="#0b2a45" text-anchor="middle" font-weight="700">Remote state</text><text x="360.0" y="342" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">dev/*.tfstate</text><rect x="450" y="40" width="140" height="210" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><text x="520" y="64" font-size="15" fill="#0b2a45" text-anchor="middle" font-weight="700">staging</text><rect x="462" y="78" width="116" height="44" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="520.0" y="96" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">network</text><text x="520.0" y="113" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">module v1.4.0</text><rect x="462" y="134" width="116" height="44" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="520.0" y="152" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">eks</text><text x="520.0" y="169" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">module v1.4.0</text><rect x="462" y="190" width="116" height="44" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="520.0" y="208" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">postgres</text><text x="520.0" y="225" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">module v1.4.0</text><line x1="520" y1="252" x2="520" y2="300" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#tf-ah)"/><rect x="460" y="304" width="120" height="54" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="520.0" y="325" font-size="12.5" fill="#0b2a45" text-anchor="middle" font-weight="700">Remote state</text><text x="520.0" y="342" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">staging/*.tfstate</text><rect x="610" y="40" width="140" height="210" rx="8" fill="#ffffff" stroke="#c8102e" stroke-width="2"/><text x="680" y="64" font-size="15" fill="#c8102e" text-anchor="middle" font-weight="700">prod</text><rect x="622" y="78" width="116" height="44" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="680.0" y="96" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">network</text><text x="680.0" y="113" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">module v1.4.0</text><rect x="622" y="134" width="116" height="44" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="680.0" y="152" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">eks</text><text x="680.0" y="169" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">module v1.4.0</text><rect x="622" y="190" width="116" height="44" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="680.0" y="208" font-size="13" fill="#0b2a45" text-anchor="middle" font-weight="700">postgres</text><text x="680.0" y="225" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">module v1.4.0</text><line x1="680" y1="252" x2="680" y2="300" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#tf-ah)"/><rect x="620" y="304" width="120" height="54" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="680.0" y="325" font-size="12.5" fill="#0b2a45" text-anchor="middle" font-weight="700">Remote state</text><text x="680.0" y="342" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">prod/*.tfstate</text><line x1="222" y1="175" x2="286" y2="175" stroke="#29abe2" stroke-width="1.8" marker-end="url(#tf-ahc)"/><text x="254" y="166" font-size="11.5" fill="#29abe2" text-anchor="middle" font-weight="600">pinned</text><text x="525" y="388" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400" font-style="italic">New module versions are promoted dev → staging → prod by bumping the version</text></svg></div><figcaption>Modules are reusable and versioned; each environment and component has its own configuration and state.</figcaption></figure>
+<pre><code>infrastructure/
+├── modules/
+│   ├── network/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   │   ├── versions.tf
+│   │   └── README.md
+│   ├── eks-cluster/
+│   └── postgres/
+└── live/
+    ├── dev/
+    │   ├── network/
+    │   │   ├── main.tf        # calls ../../../modules/network
+    │   │   ├── backend.tf
+    │   │   └── terraform.tfvars
+    │   ├── eks/
+    │   └── postgres/
+    ├── staging/
+    │   └── ...same components...
+    └── prod/
+        └── ...same components...</code></pre>
+<p>Each folder under <code>live/&lt;env&gt;/</code> is a separate root module with its own state file. Splitting by component (network, cluster, database) as well as by environment keeps plans fast and limits the blast radius of each apply.</p>
+
+<h2 id="module-design-rules">Module design rules</h2>
+<h3>1. One clear responsibility per module</h3>
+<p>A module should do one thing well: "a production-ready Postgres instance with backups, monitoring and parameter group", not "everything for service X". Large "kitchen sink" modules become hard to change safely.</p>
+
+<h3>2. A small, explicit interface</h3>
+<p>Expose only the inputs consumers genuinely need, with sensible defaults and validation:</p>
+<pre><code>variable "instance_class" {
+  type        = string
+  default     = "db.t4g.medium"
+  description = "RDS instance class."
+}
+
+variable "environment" {
+  type = string
+  validation {
+    condition     = contains(["dev", "staging", "prod"], var.environment)
+    error_message = "environment must be dev, staging or prod."
+  }
+}</code></pre>
+
+<h3>3. Secure by default</h3>
+<p>Encryption at rest, private networking, deletion protection in production and least-privilege IAM should be the defaults, so that the easy path is also the safe path.</p>
+
+<h3>4. Pin provider and Terraform versions</h3>
+<pre><code>terraform {
+  required_version = "&gt;= 1.6"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~&gt; 5.0"
+    }
+  }
+}</code></pre>
+
+<h3>5. Document inputs and outputs</h3>
+<p>A short README with an example call saves hours. Tools such as <code>terraform-docs</code> can generate the inputs and outputs tables automatically.</p>
+
+<h2 id="state-separate-it-deliberately">State: separate it deliberately</h2>
+<ul>
+  <li><strong>One state file per environment and component.</strong> Never share state between dev and prod.</li>
+  <li><strong>Remote backend with locking</strong>, for example S3 with DynamoDB locking (or S3 native locking), Azure Storage or GCS.</li>
+  <li><strong>Separate accounts or subscriptions per environment</strong> where possible. It's the strongest guardrail you can have.</li>
+  <li>Share values between stacks through outputs and <code>terraform_remote_state</code> or data sources, not by hard-coding IDs.</li>
+</ul>
+
+<h2 id="versioning-modules">Versioning modules</h2>
+<p>Once more than one team consumes a module, version it. Either keep modules in a dedicated repository and tag releases, or publish them to a private registry. Live configurations then pin a version:</p>
+<pre><code>module "network" {
+  source = "git::https://github.com/acme/terraform-modules.git//network?ref=v1.4.0"
+
+  environment = "prod"
+  cidr_block  = "10.20.0.0/16"
+}</code></pre>
+<p>This lets you roll a module change through dev, then staging, then production, simply by bumping the version in each environment.</p>
+
+<h2 id="workspaces-folders-or-terragrunt">Workspaces, folders or Terragrunt?</h2>
+<table>
+  <thead><tr><th>Approach</th><th>Good for</th><th>Watch out for</th></tr></thead>
+  <tbody>
+    <tr><td>Folder per environment (above)</td><td>Most teams; explicit and easy to review</td><td>Some duplication of backend and provider blocks</td></tr>
+    <tr><td>Terraform workspaces</td><td>Identical, short-lived copies such as feature environments</td><td>Easy to apply to the wrong workspace; differences between environments get hidden in conditionals</td></tr>
+    <tr><td>Terragrunt</td><td>Many environments and regions; removes backend boilerplate</td><td>An extra tool for the team to learn and maintain</td></tr>
+  </tbody>
+</table>
+
+<h2 id="put-it-in-a-pipeline">Put it in a pipeline</h2>
+<p>Structure pays off fully when every change goes through CI/CD:</p>
+<ol>
+  <li>On pull request: <code>terraform fmt -check</code>, <code>validate</code>, linting (tflint), security scanning (Checkov or Trivy) and <code>plan</code>, with the plan posted to the PR.</li>
+  <li>On merge: <code>apply</code> to dev automatically, then promote to staging and production with approvals.</li>
+  <li>Scheduled: a drift-detection plan that alerts when real infrastructure no longer matches code.</li>
+</ol>
+
+<h2 id="checklist">Checklist</h2>
+<ul>
+  <li>Modules and live configurations are separated.</li>
+  <li>Each environment and component has its own remote state with locking.</li>
+  <li>Modules have small interfaces, validation, secure defaults and READMEs.</li>
+  <li>Provider and module versions are pinned.</li>
+  <li>Every change is planned and reviewed in CI before it is applied.</li>
+</ul>
+<p>Get these foundations right early and your Terraform codebase will grow with your organisation instead of slowing it down.</p>
+
+        <div class="callout">
+          <h3 style="margin-top:0">Need help with DevOps &amp; CI/CD?</h3>
+          <p>Jarvix helps teams design, build and run this in production. See our <a href="/services.html#devops">DevOps &amp; CI/CD</a> services or <a href="/contact/">book a consultation</a>.</p>
+        </div>
+
+        <h3>More from the blog</h3>
+        <ul>
+          <li><a href="/blog/terraform-vs-opentofu/">Terraform vs OpenTofu: Differences, Licensing and How to Choose</a></li>
+          <li><a href="/blog/ai-agents-for-incident-analysis/">Using AI Agents for Incident Analysis: Architecture and Guardrails</a></li>
+          <li><a href="/blog/cloud-migration-strategies-7-rs/">On-Prem to Cloud Migration: The 7 Rs Explained</a></li>
+        </ul>
+      </article>
+      <aside class="post-aside">
+        <div class="card">
+          <h4>On this page</h4>
+          <ul class="toc">
+            <li><a href="#goals-of-a-good-structure">Goals of a good structure</a></li>
+            <li><a href="#two-kinds-of-terraform-code">Two kinds of Terraform code</a></li>
+            <li><a href="#a-recommended-repository-layout">A recommended repository layout</a></li>
+            <li><a href="#module-design-rules">Module design rules</a></li>
+            <li><a href="#state-separate-it-deliberately">State: separate it deliberately</a></li>
+            <li><a href="#versioning-modules">Versioning modules</a></li>
+            <li><a href="#workspaces-folders-or-terragrunt">Workspaces, folders or Terragrunt?</a></li>
+            <li><a href="#put-it-in-a-pipeline">Put it in a pipeline</a></li>
+            <li><a href="#checklist">Checklist</a></li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top:20px;border-top-color:var(--red)">
+          <h4>Work with us</h4>
+          <p style="font-size:.95rem">Get help with DevOps &amp; CI/CD from senior engineers.</p>
+          <a class="btn" href="/contact/" style="padding:10px 18px;font-size:.95rem">Book a consultation</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/assets/logo.png" alt="Jarvix">
+        <p style="color:var(--navy);font-weight:600;margin-bottom:.4em">Engineering at the intersection of cloud and AI</p>
+        <p>Cloud-native platform engineering, DevOps, SRE,<br>observability, AI and MLOps consulting.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+        <a href="/contact/">Contact</a>
+        <a href="/privacy/">Privacy policy</a>
+      </div>
+      <div>
+        <h4>Office</h4>
+        <p>Jarvix Private Limited<br>Pune, Maharashtra,<br>India - 411036</p>
+        <a href="mailto:contact@jarvix.in">contact@jarvix.in</a>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Jarvix Private Limited. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Terraform vs OpenTofu: Differences, Licensing and How to Choose | Jarvix Blog</title>
+  <meta name="description" content="OpenTofu is the open-source fork of Terraform. Compare licensing, features, ecosystem and support, and learn how to decide and migrate safely.">
+  <link rel="canonical" href="https://jarvix.in/blog/terraform-vs-opentofu/">
+  <meta property="og:title" content="Terraform vs OpenTofu: Differences, Licensing and How to Choose | Jarvix Blog">
+  <meta property="og:description" content="OpenTofu is the open-source fork of Terraform. Compare licensing, features, ecosystem and support, and learn how to decide and migrate safely.">
+  <meta property="og:url" content="https://jarvix.in/blog/terraform-vs-opentofu/">
+  <meta property="og:image" content="https://jarvix.in/assets/logo.png">
+  <meta property="og:type" content="article">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Terraform vs OpenTofu: Differences, Licensing and How to Choose", "description": "OpenTofu is the open-source fork of Terraform. Compare licensing, features, ecosystem and support, and learn how to decide and migrate safely.", "datePublished": "2026-11-26", "dateModified": "2026-11-26", "author": {"@type": "Organization", "name": "Jarvix Engineering", "url": "https://jarvix.in"}, "publisher": {"@type": "Organization", "name": "Jarvix Private Limited", "logo": {"@type": "ImageObject", "url": "https://jarvix.in/assets/logo.png"}}, "mainEntityOfPage": "https://jarvix.in/blog/terraform-vs-opentofu/", "keywords": "Terraform, OpenTofu, Infrastructure as Code"}</script>
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a href="/"><img src="/assets/logo.png" alt="Jarvix"></a>
+    <input type="checkbox" id="menu-toggle" aria-label="Toggle menu">
+    <label for="menu-toggle" class="menu-btn" aria-hidden="true">&#9776;</label>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/services.html">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/blog/" aria-current="page">Blog</a>
+      <a href="/contact/" class="btn">Contact us</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="eyebrow"><a href="/blog/" style="color:inherit;text-decoration:none">Blog</a> · Terraform</div>
+      <h1 style="font-size:clamp(1.9rem,4.2vw,2.8rem);max-width:900px">Terraform vs OpenTofu: Differences, Licensing and How to Choose</h1>
+      <p class="meta">By Jarvix Engineering · <time datetime="2026-11-26">26 November 2026</time> · 5 min read</p>
+      <div class="tools"><span class="tools-label">Tools covered</span><span><img src="/assets/logos/terraform.svg" alt="" width="20" height="20">Terraform</span><span><img src="/assets/logos/opentofu.svg" alt="" width="20" height="20">OpenTofu</span><span><img src="/assets/logos/githubactions.svg" alt="" width="20" height="20">GitHub Actions</span></div>
+    </div>
+  </section>
+
+  <section style="padding-top:56px">
+    <div class="wrap post-layout">
+      <article class="article">
+<p>For almost a decade, "infrastructure as code" and "Terraform" were close to synonyms. That changed in 2023, when HashiCorp moved Terraform to a source-available licence and the community responded with <strong>OpenTofu</strong>, an open-source fork. Today both tools are actively developed, and many teams are asking which one they should standardise on. This guide explains the differences and how to decide.</p>
+
+<h2 id="a-short-history">A short history</h2>
+<figure class="diagram"><div class="scroll"><svg viewBox="0 0 760 270" role="img" aria-label="Timeline: Terraform moved from MPL 2.0 to BSL 1.1 in 2023, and OpenTofu was forked from the last open-source release under the Linux Foundation" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" xmlns="http://www.w3.org/2000/svg"><title>Timeline: Terraform moved from MPL 2.0 to BSL 1.1 in 2023, and OpenTofu was forked from the last open-source release under the Linux Foundation</title><defs><marker id="tt-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b2a45"/></marker><marker id="tt-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c8102e"/></marker><marker id="tt-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f8a4c"/></marker><marker id="tt-ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#29abe2"/></marker></defs><rect x="10" y="95" width="190" height="80" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><image href="/assets/logos/terraform.svg" x="22" y="109" width="26" height="26" preserveAspectRatio="xMidYMid meet"/><text x="56" y="127" font-size="14" fill="#0b2a45" text-anchor="start" font-weight="700">Terraform</text><text x="22" y="152" font-size="11.5" fill="#6b7c8f" text-anchor="start" font-weight="400">MPL 2.0, up to v1.5.x</text><path d="M202,135 C240,135 240,50 280,50" fill="none" stroke="#0b2a45" stroke-width="2"/><path d="M202,135 C240,135 240,220 280,220" fill="none" stroke="#1f8a4c" stroke-width="2"/><line x1="280" y1="50" x2="748" y2="50" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#tt-ah)"/><line x1="280" y1="220" x2="748" y2="220" stroke="#1f8a4c" stroke-width="1.8" marker-end="url(#tt-ahg)"/><image href="/assets/logos/terraform.svg" x="284" y="18" width="22" height="22" preserveAspectRatio="xMidYMid meet"/><text x="312" y="34" font-size="13" fill="#0b2a45" text-anchor="start" font-weight="700">Terraform: BSL 1.1 (source-available)</text><image href="/assets/logos/opentofu.svg" x="284" y="236" width="22" height="22" preserveAspectRatio="xMidYMid meet"/><text x="312" y="253" font-size="13" fill="#1f8a4c" text-anchor="start" font-weight="700">OpenTofu: MPL 2.0 (open source)</text><circle cx="340" cy="50" r="6" fill="#fff" stroke="#0b2a45" stroke-width="2"/><text x="340" y="76" font-size="12" fill="#0b2a45" text-anchor="middle" font-weight="700">Aug 2023</text><text x="340" y="92" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">licence change</text><circle cx="500" cy="50" r="6" fill="#fff" stroke="#0b2a45" stroke-width="2"/><text x="500" y="76" font-size="12" fill="#0b2a45" text-anchor="middle" font-weight="700">v1.6+</text><text x="500" y="92" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">BSL releases</text><circle cx="660" cy="50" r="6" fill="#fff" stroke="#0b2a45" stroke-width="2"/><text x="660" y="76" font-size="12" fill="#0b2a45" text-anchor="middle" font-weight="700">2025</text><text x="660" y="92" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">IBM acquires HashiCorp</text><circle cx="330" cy="220" r="6" fill="#fff" stroke="#1f8a4c" stroke-width="2"/><text x="330" y="186" font-size="12" fill="#0b2a45" text-anchor="middle" font-weight="700">Sep 2023</text><text x="330" y="202" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">Linux Foundation</text><circle cx="450" cy="220" r="6" fill="#fff" stroke="#1f8a4c" stroke-width="2"/><text x="450" y="186" font-size="12" fill="#0b2a45" text-anchor="middle" font-weight="700">Jan 2024</text><text x="450" y="202" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">OpenTofu 1.6 GA</text><circle cx="570" cy="220" r="6" fill="#fff" stroke="#1f8a4c" stroke-width="2"/><text x="570" y="186" font-size="12" fill="#0b2a45" text-anchor="middle" font-weight="700">Apr 2024</text><text x="570" y="202" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">state encryption</text><circle cx="690" cy="220" r="6" fill="#fff" stroke="#1f8a4c" stroke-width="2"/><text x="690" y="186" font-size="12" fill="#0b2a45" text-anchor="middle" font-weight="700">Today</text><text x="690" y="202" font-size="11" fill="#6b7c8f" text-anchor="middle" font-weight="400">CNCF project</text></svg></div><figcaption>Terraform and OpenTofu share a history up to v1.5, then diverge in licence and governance.</figcaption></figure>
+<ul>
+  <li><strong>August 2023:</strong> HashiCorp announced that future Terraform releases would move from the Mozilla Public License (MPL 2.0) to the Business Source License (BSL 1.1).</li>
+  <li><strong>September 2023:</strong> a community fork, first called OpenTF and then renamed OpenTofu, was accepted into the Linux Foundation. It was forked from the last MPL-licensed Terraform release.</li>
+  <li><strong>January 2024:</strong> OpenTofu 1.6.0, the first stable release, shipped.</li>
+  <li><strong>Since then:</strong> both projects have added features independently. OpenTofu has also joined the Cloud Native Computing Foundation (CNCF), and IBM completed its acquisition of HashiCorp in 2025.</li>
+</ul>
+
+<h2 id="the-licence-difference">The licence difference</h2>
+<p>This is the root of the split, so it is worth understanding precisely.</p>
+<ul>
+  <li><strong>OpenTofu</strong> is licensed under MPL 2.0, an open-source licence. You can use, modify and redistribute it, including in commercial products.</li>
+  <li><strong>Terraform</strong> (version 1.6 and later) is licensed under BSL 1.1. It is free to use, but the licence restricts offering it as part of a product that competes with HashiCorp's own commercial offerings.</li>
+</ul>
+<p>For most companies that simply use Terraform to manage their own infrastructure, the BSL does not restrict day-to-day use. It matters most to vendors building platforms or services on top of Terraform. If you are unsure how it applies to you, ask your legal team; this article is not legal advice.</p>
+
+<h2 id="side-by-side-comparison">Side-by-side comparison</h2>
+<table>
+  <thead><tr><th></th><th>Terraform</th><th>OpenTofu</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Licence</strong></td><td>BSL 1.1 (source-available)</td><td>MPL 2.0 (open source)</td></tr>
+    <tr><td><strong>Governance</strong></td><td>HashiCorp (an IBM company)</td><td>Community, under the Linux Foundation and CNCF</td></tr>
+    <tr><td><strong>CLI</strong></td><td><code>terraform</code></td><td><code>tofu</code></td></tr>
+    <tr><td><strong>Language</strong></td><td>HCL</td><td>HCL, compatible with Terraform configurations</td></tr>
+    <tr><td><strong>Providers and modules</strong></td><td>Terraform Registry</td><td>OpenTofu Registry, which serves the same providers and modules</td></tr>
+    <tr><td><strong>Commercial platform</strong></td><td>HCP Terraform and Terraform Enterprise</td><td>Third-party platforms such as Spacelift, env0, Scalr and Harness</td></tr>
+    <tr><td><strong>Notable unique features</strong></td><td>Deep HCP Terraform integration, Terraform Stacks</td><td>Client-side state encryption, early variable evaluation, provider <code>for_each</code>, <code>-exclude</code> flag</td></tr>
+  </tbody>
+</table>
+
+<h2 id="features-that-now-differ">Features that now differ</h2>
+<h3>OpenTofu</h3>
+<ul>
+  <li><strong>State encryption:</strong> encrypt state and plan files on the client side, so secrets in state are protected even if your backend is compromised.</li>
+  <li><strong>Early variable evaluation:</strong> use variables and locals in places Terraform does not allow, such as backend configuration and module sources.</li>
+  <li><strong>Provider iteration:</strong> <code>for_each</code> on provider configurations, which simplifies multi-region and multi-account setups.</li>
+  <li><strong>Excluding resources:</strong> an <code>-exclude</code> flag, the opposite of <code>-target</code>, for planning around a resource.</li>
+</ul>
+<h3>Terraform</h3>
+<ul>
+  <li><strong>HCP Terraform integration:</strong> remote runs, policy as code with Sentinel, private registry and a managed workflow from the same vendor.</li>
+  <li><strong>Terraform Stacks:</strong> a way to manage many related configurations and deployments together, aimed at large estates.</li>
+  <li><strong>Vendor support:</strong> commercial support contracts directly from HashiCorp.</li>
+</ul>
+<p>Both tools continue to add features such as testing frameworks and ephemeral values, sometimes with different syntax. The longer the projects diverge, the more important it is to pick one and use its features deliberately.</p>
+
+<h2 id="how-to-choose">How to choose</h2>
+<p><strong>OpenTofu is usually the better fit if:</strong></p>
+<ul>
+  <li>Open-source licensing and community governance are important to your organisation.</li>
+  <li>You build a product or internal platform that embeds infrastructure as code.</li>
+  <li>You want state encryption or the other OpenTofu-only features.</li>
+  <li>You use, or plan to use, a third-party automation platform rather than HCP Terraform.</li>
+</ul>
+<p><strong>Terraform is usually the better fit if:</strong></p>
+<ul>
+  <li>You already rely on HCP Terraform or Terraform Enterprise, including Sentinel policies.</li>
+  <li>You want commercial support from a single vendor.</li>
+  <li>Your team depends on Terraform-only features such as Stacks.</li>
+</ul>
+<p>If neither list clearly applies, either tool will serve you well. Consistency across your organisation matters more than the choice itself.</p>
+
+<h2 id="migrating-from-terraform-to-opentofu">Migrating from Terraform to OpenTofu</h2>
+<p>For configurations written for Terraform 1.5 or earlier, migration is usually straightforward. For newer versions, check the OpenTofu migration guide for your exact release first.</p>
+<ol>
+  <li><strong>Back up your state</strong> and make sure there are no pending changes: <code>terraform plan</code> should show nothing to do.</li>
+  <li><strong>Install OpenTofu</strong> and pin the version in CI, just as you would for Terraform.</li>
+  <li><strong>Initialise</strong> in the same directory:
+<pre><code>tofu init
+tofu plan   # should report no changes</code></pre></li>
+  <li><strong>Review any differences</strong> in the plan before applying anything.</li>
+  <li><strong>Update your pipelines</strong> to call <code>tofu</code> instead of <code>terraform</code>, starting with a non-production environment.</li>
+  <li><strong>Roll out gradually</strong>, one environment and one component at a time, as described in our guide to <a href="/blog/terraform-module-structure/">Terraform module structure</a>.</li>
+</ol>
+<p>Avoid running both tools against the same state at the same time. Once a state file has been written by one tool, keep using that tool for it.</p>
+
+<h2 id="summary">Summary</h2>
+<p>Terraform and OpenTofu share the same roots, language and provider ecosystem, but they now differ in licence, governance and a growing set of features. Choose Terraform if you are invested in HashiCorp's commercial platform; choose OpenTofu if open-source licensing, community governance or its unique features matter to you. Whichever you pick, standardise on it, pin versions and run every change through a reviewed pipeline.</p>
+
+        <div class="callout">
+          <h3 style="margin-top:0">Need help with DevOps &amp; CI/CD?</h3>
+          <p>Jarvix helps teams design, build and run this in production. See our <a href="/services.html#devops">DevOps &amp; CI/CD</a> services or <a href="/contact/">book a consultation</a>.</p>
+        </div>
+
+        <h3>More from the blog</h3>
+        <ul>
+          <li><a href="/blog/ai-agents-for-incident-analysis/">Using AI Agents for Incident Analysis: Architecture and Guardrails</a></li>
+          <li><a href="/blog/cloud-migration-strategies-7-rs/">On-Prem to Cloud Migration: The 7 Rs Explained</a></li>
+          <li><a href="/blog/reducing-alert-fatigue/">Reducing Alert Fatigue: A Practical Guide for On-Call Teams</a></li>
+        </ul>
+      </article>
+      <aside class="post-aside">
+        <div class="card">
+          <h4>On this page</h4>
+          <ul class="toc">
+            <li><a href="#a-short-history">A short history</a></li>
+            <li><a href="#the-licence-difference">The licence difference</a></li>
+            <li><a href="#side-by-side-comparison">Side-by-side comparison</a></li>
+            <li><a href="#features-that-now-differ">Features that now differ</a></li>
+            <li><a href="#how-to-choose">How to choose</a></li>
+            <li><a href="#migrating-from-terraform-to-opentofu">Migrating from Terraform to OpenTofu</a></li>
+            <li><a href="#summary">Summary</a></li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top:20px;border-top-color:var(--red)">
+          <h4>Work with us</h4>
+          <p style="font-size:.95rem">Get help with DevOps &amp; CI/CD from senior engineers.</p>
+          <a class="btn" href="/contact/" style="padding:10px 18px;font-size:.95rem">Book a consultation</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/assets/logo.png" alt="Jarvix">
+        <p style="color:var(--navy);font-weight:600;margin-bottom:.4em">Engineering at the intersection of cloud and AI</p>
+        <p>Cloud-native platform engineering, DevOps, SRE,<br>observability, AI and MLOps consulting.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+        <a href="/contact/">Contact</a>
+        <a href="/privacy/">Privacy policy</a>
+      </div>
+      <div>
+        <h4>Office</h4>
+        <p>Jarvix Private Limited<br>Pune, Maharashtra,<br>India - 411036</p>
+        <a href="mailto:contact@jarvix.in">contact@jarvix.in</a>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Jarvix Private Limited. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>

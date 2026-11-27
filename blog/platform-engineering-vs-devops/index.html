@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Platform Engineering vs DevOps: What's the Difference and When Do You Need a Platform Team? | Jarvix Blog</title>
+  <meta name="description" content="DevOps is a culture; platform engineering is a way to scale it. Learn how the two differ, the signs you need a platform team, and how to start without a big-bang reorganisation.">
+  <link rel="canonical" href="https://jarvix.in/blog/platform-engineering-vs-devops/">
+  <meta property="og:title" content="Platform Engineering vs DevOps: What&#x27;s the Difference and When Do You Need a Platform Team? | Jarvix Blog">
+  <meta property="og:description" content="DevOps is a culture; platform engineering is a way to scale it. Learn how the two differ, the signs you need a platform team, and how to start without a big-bang reorganisation.">
+  <meta property="og:url" content="https://jarvix.in/blog/platform-engineering-vs-devops/">
+  <meta property="og:image" content="https://jarvix.in/assets/logo.png">
+  <meta property="og:type" content="article">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Platform Engineering vs DevOps: What's the Difference and When Do You Need a Platform Team?", "description": "DevOps is a culture; platform engineering is a way to scale it. Learn how the two differ, the signs you need a platform team, and how to start without a big-bang reorganisation.", "datePublished": "2026-09-01", "dateModified": "2026-09-01", "author": {"@type": "Organization", "name": "Jarvix Engineering", "url": "https://jarvix.in"}, "publisher": {"@type": "Organization", "name": "Jarvix Private Limited", "logo": {"@type": "ImageObject", "url": "https://jarvix.in/assets/logo.png"}}, "mainEntityOfPage": "https://jarvix.in/blog/platform-engineering-vs-devops/", "keywords": "Platform Engineering, DevOps"}</script>
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a href="/"><img src="/assets/logo.png" alt="Jarvix"></a>
+    <input type="checkbox" id="menu-toggle" aria-label="Toggle menu">
+    <label for="menu-toggle" class="menu-btn" aria-hidden="true">&#9776;</label>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/services.html">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/blog/" aria-current="page">Blog</a>
+      <a href="/contact/" class="btn">Contact us</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="eyebrow"><a href="/blog/" style="color:inherit;text-decoration:none">Blog</a> · Platform Engineering</div>
+      <h1 style="font-size:clamp(1.9rem,4.2vw,2.8rem);max-width:900px">Platform Engineering vs DevOps: What's the Difference and When Do You Need a Platform Team?</h1>
+      <p class="meta">By Jarvix Engineering · <time datetime="2026-09-01">1 September 2026</time> · 5 min read</p>
+      <div class="tools"><span class="tools-label">Tools covered</span><span><img src="/assets/logos/backstage.svg" alt="" width="20" height="20">Backstage</span><span><img src="/assets/logos/kubernetes.svg" alt="" width="20" height="20">Kubernetes</span><span><img src="/assets/logos/argo.svg" alt="" width="20" height="20">Argo CD</span><span><img src="/assets/logos/terraform.svg" alt="" width="20" height="20">Terraform</span><span><img src="/assets/logos/githubactions.svg" alt="" width="20" height="20">GitHub Actions</span></div>
+    </div>
+  </section>
+
+  <section style="padding-top:56px">
+    <div class="wrap post-layout">
+      <article class="article">
+<p>"Is platform engineering just DevOps with a new name?" It's one of the most common questions we hear from engineering leaders. The short answer is no, but the two are closely related. DevOps describes <em>how</em> teams should work. Platform engineering is one of the most effective ways to make that way of working scale beyond a handful of teams.</p>
+
+<h2 id="devops-in-one-paragraph">DevOps in one paragraph</h2>
+<p>DevOps is a set of practices and a culture that brings development and operations together. The goal is to shorten the path from a code change to a reliable production release. In practice that means shared ownership ("you build it, you run it"), automation of builds, tests and deployments, infrastructure as code, and fast feedback through monitoring. DevOps is not a job title or a team; it's a way of working.</p>
+
+<h2 id="platform-engineering-in-one-paragraph">Platform engineering in one paragraph</h2>
+<p>Platform engineering is the discipline of building and running an <strong>internal developer platform (IDP)</strong>: a curated set of tools, services and workflows that product teams use to build, deploy and operate their software on their own. A platform team treats this platform as a product, with developers as its customers. Instead of every team assembling its own pipelines, Kubernetes manifests, secrets handling and dashboards, the platform offers well-supported, self-service "paved roads".</p>
+
+<figure class="diagram"><div class="scroll"><svg viewBox="0 0 760 390" role="img" aria-label="Without a platform each team builds its own stack; with a platform, teams self-serve from a shared internal developer platform" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" xmlns="http://www.w3.org/2000/svg"><title>Without a platform each team builds its own stack; with a platform, teams self-serve from a shared internal developer platform</title><defs><marker id="pvd-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b2a45"/></marker><marker id="pvd-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c8102e"/></marker><marker id="pvd-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f8a4c"/></marker><marker id="pvd-ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#29abe2"/></marker></defs><text x="180" y="24" font-size="16" fill="#c8102e" text-anchor="middle" font-weight="700">Without a platform</text><rect x="10" y="44" width="104" height="160" rx="8" fill="#fdecef" stroke="#f0b6c0" stroke-width="1.5"/><text x="62.0" y="72" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Team A</text><text x="62.0" y="89" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own pipeline</text><text x="62.0" y="105" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own IaC</text><text x="62.0" y="121" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own K8s config</text><text x="62.0" y="137" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own dashboards</text><line x1="62" y1="206" x2="62" y2="262" stroke="#c8102e" stroke-width="1.8" marker-end="url(#pvd-ahr)"/><rect x="128" y="44" width="104" height="160" rx="8" fill="#fdecef" stroke="#f0b6c0" stroke-width="1.5"/><text x="180.0" y="72" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Team B</text><text x="180.0" y="89" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own pipeline</text><text x="180.0" y="105" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own IaC</text><text x="180.0" y="121" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own K8s config</text><text x="180.0" y="137" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own dashboards</text><line x1="180" y1="206" x2="180" y2="262" stroke="#c8102e" stroke-width="1.8" marker-end="url(#pvd-ahr)"/><rect x="246" y="44" width="104" height="160" rx="8" fill="#fdecef" stroke="#f0b6c0" stroke-width="1.5"/><text x="298.0" y="72" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Team C</text><text x="298.0" y="89" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own pipeline</text><text x="298.0" y="105" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own IaC</text><text x="298.0" y="121" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own K8s config</text><text x="298.0" y="137" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Own dashboards</text><line x1="298" y1="206" x2="298" y2="262" stroke="#c8102e" stroke-width="1.8" marker-end="url(#pvd-ahr)"/><rect x="10" y="266" width="340" height="58" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="180.0" y="293.0" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Cloud</text><text x="180.0" y="310.0" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">AWS · Azure · GCP</text><text x="180" y="352" font-size="13" fill="#c8102e" text-anchor="middle" font-weight="600">Duplicated effort, inconsistent controls</text><text x="180" y="372" font-size="13" fill="#c8102e" text-anchor="middle" font-weight="600">and a few overloaded experts</text><line x1="380" y1="20" x2="380" y2="375" stroke="#cfdbe5" stroke-width="1.5" stroke-dasharray="4 5"/><text x="580" y="24" font-size="16" fill="#1f8a4c" text-anchor="middle" font-weight="700">With a platform</text><rect x="410" y="44" width="104" height="48" rx="8" fill="#e9f7ef" stroke="#a7d9bb" stroke-width="1.5"/><text x="462.0" y="73.0" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Team A</text><line x1="462" y1="94" x2="462" y2="126" stroke="#1f8a4c" stroke-width="1.8" marker-end="url(#pvd-ahg)"/><rect x="528" y="44" width="104" height="48" rx="8" fill="#e9f7ef" stroke="#a7d9bb" stroke-width="1.5"/><text x="580.0" y="73.0" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Team B</text><line x1="580" y1="94" x2="580" y2="126" stroke="#1f8a4c" stroke-width="1.8" marker-end="url(#pvd-ahg)"/><rect x="646" y="44" width="104" height="48" rx="8" fill="#e9f7ef" stroke="#a7d9bb" stroke-width="1.5"/><text x="698.0" y="73.0" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Team C</text><line x1="698" y1="94" x2="698" y2="126" stroke="#1f8a4c" stroke-width="1.8" marker-end="url(#pvd-ahg)"/><text x="639" y="116" font-size="11" fill="#1f8a4c" text-anchor="middle" font-weight="600">self-service</text><rect x="410" y="130" width="340" height="112" rx="8" fill="#eaf6fc" stroke="#29abe2" stroke-width="1.5"/><text x="580.0" y="156" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Internal developer platform</text><text x="580.0" y="173" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">Templates · Pipelines · Infrastructure · Observability</text><image href="/assets/logos/backstage.svg" x="478.0" y="198" width="28" height="28" preserveAspectRatio="xMidYMid meet"/><image href="/assets/logos/githubactions.svg" x="522.0" y="198" width="28" height="28" preserveAspectRatio="xMidYMid meet"/><image href="/assets/logos/argo.svg" x="566.0" y="198" width="28" height="28" preserveAspectRatio="xMidYMid meet"/><image href="/assets/logos/terraform.svg" x="610.0" y="198" width="28" height="28" preserveAspectRatio="xMidYMid meet"/><image href="/assets/logos/kubernetes.svg" x="654.0" y="198" width="28" height="28" preserveAspectRatio="xMidYMid meet"/><line x1="580" y1="244" x2="580" y2="262" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#pvd-ah)"/><rect x="410" y="266" width="340" height="58" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="580.0" y="293.0" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Cloud</text><text x="580.0" y="310.0" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">AWS · Azure · GCP</text><text x="580" y="352" font-size="13" fill="#1f8a4c" text-anchor="middle" font-weight="600">Consistent, secure by default,</text><text x="580" y="372" font-size="13" fill="#1f8a4c" text-anchor="middle" font-weight="600">and teams still own their services</text></svg></div><figcaption>Without a platform, every team rebuilds the same plumbing. A platform turns it into self-service.</figcaption></figure>
+
+<h2 id="the-key-differences">The key differences</h2>
+<table>
+  <thead><tr><th></th><th>DevOps</th><th>Platform engineering</th></tr></thead>
+  <tbody>
+    <tr><td><strong>What it is</strong></td><td>A culture and set of practices</td><td>A discipline and a team that builds an internal product</td></tr>
+    <tr><td><strong>Main goal</strong></td><td>Faster, safer delivery through shared ownership and automation</td><td>Reduce developer cognitive load so DevOps practices scale</td></tr>
+    <tr><td><strong>Who does it</strong></td><td>Everyone in delivery teams</td><td>A dedicated platform team, serving product teams</td></tr>
+    <tr><td><strong>Typical output</strong></td><td>Pipelines, IaC, monitoring per team</td><td>Self-service templates, portals, shared pipelines, guardrails</td></tr>
+    <tr><td><strong>Success measure</strong></td><td>DORA metrics: lead time, deployment frequency, change failure rate, recovery time</td><td>DORA metrics plus platform adoption and developer satisfaction</td></tr>
+  </tbody>
+</table>
+
+<h2 id="why-platform-engineering-emerged">Why platform engineering emerged</h2>
+<p>"You build it, you run it" works well when you have a few teams and a simple stack. As organisations grow, each team is suddenly expected to be expert in Kubernetes, Terraform, CI/CD, observability, security scanning, secrets management and cloud cost. Three things tend to happen:</p>
+<ul>
+  <li><strong>Cognitive overload.</strong> Developers spend a large share of their time on infrastructure plumbing rather than product features.</li>
+  <li><strong>Inconsistency.</strong> Ten teams build ten slightly different pipelines, each with its own gaps in security and reliability.</li>
+  <li><strong>Hidden operations teams.</strong> A few infrastructure-savvy engineers become an informal help desk, and a bottleneck.</li>
+</ul>
+<p>Platform engineering addresses this by moving the common, undifferentiated work into a shared platform, while keeping teams in control of their own services.</p>
+
+<h2 id="signs-you-need-a-platform-team">Signs you need a platform team</h2>
+<p>You probably don't need a platform team with three product teams and one service each. You likely do when several of these are true:</p>
+<ul>
+  <li>Spinning up a new service takes days or weeks and needs tickets to other teams.</li>
+  <li>Every team maintains its own CI/CD pipeline and they are drifting apart.</li>
+  <li>Security and compliance controls are applied inconsistently, or only at audit time.</li>
+  <li>Onboarding a new engineer to "how we deploy" takes more than a few days.</li>
+  <li>A small group of infrastructure experts is permanently interrupted with requests.</li>
+  <li>You run more than one environment or cloud and the differences keep causing incidents.</li>
+</ul>
+
+<h2 id="what-a-good-platform-looks-like">What a good platform looks like</h2>
+<p>A useful internal platform usually starts small and covers the most frequent developer journeys:</p>
+<ol>
+  <li><strong>Create a new service</strong> from a template with repository, pipeline, deployment config and dashboards already wired up.</li>
+  <li><strong>Deploy</strong> through a standard pipeline with tests, security scanning and progressive rollout built in.</li>
+  <li><strong>Provision infrastructure</strong> such as a database or queue through self-service, using approved Terraform modules or Kubernetes operators.</li>
+  <li><strong>Observe</strong> the service with metrics, logs and traces available by default.</li>
+  <li><strong>Find things</strong> through a service catalogue or developer portal, such as Backstage.</li>
+</ol>
+<p>The key word is <em>self-service</em>. If developers still need to raise a ticket and wait, you've built a new operations team, not a platform.</p>
+
+<h2 id="common-mistakes-to-avoid">Common mistakes to avoid</h2>
+<ul>
+  <li><strong>Building a platform nobody asked for.</strong> Start with developer interviews and the top three pain points, not with a tool shortlist.</li>
+  <li><strong>Mandating instead of attracting.</strong> The best platforms win adoption because the paved road is genuinely easier than going it alone.</li>
+  <li><strong>Over-abstracting.</strong> Hiding Kubernetes completely often backfires. Provide sensible defaults with escape hatches.</li>
+  <li><strong>No product management.</strong> A platform without a roadmap, documentation and feedback loops quickly turns into shelfware.</li>
+  <li><strong>Treating it as a one-off project.</strong> A platform is a long-lived product that needs ongoing ownership.</li>
+</ul>
+
+<h2 id="how-to-get-started">How to get started</h2>
+<p>You don't need a big-bang reorganisation. A practical path looks like this:</p>
+<ol>
+  <li>Measure where developer time goes today and pick the most painful journey, often "create and deploy a new service".</li>
+  <li>Form a small platform team (two to four engineers is enough to begin) with a clear product owner.</li>
+  <li>Build one golden path end to end, and onboard one or two friendly product teams.</li>
+  <li>Track lead time, adoption and developer feedback, then iterate.</li>
+</ol>
+
+<h2 id="the-bottom-line">The bottom line</h2>
+<p>DevOps and platform engineering are not competitors. DevOps sets the culture of shared ownership and automation; platform engineering makes that culture sustainable at scale by giving teams a self-service foundation. If your teams are spending more time fighting infrastructure than shipping features, it's time to think about a platform.</p>
+
+        <div class="callout">
+          <h3 style="margin-top:0">Need help with platform engineering?</h3>
+          <p>Jarvix helps teams design, build and run this in production. See our <a href="/services.html#platform">Platform Engineering</a> services or <a href="/contact/">book a consultation</a>.</p>
+        </div>
+
+        <h3>More from the blog</h3>
+        <ul>
+          <li><a href="/blog/terraform-vs-opentofu/">Terraform vs OpenTofu: Differences, Licensing and How to Choose</a></li>
+          <li><a href="/blog/ai-agents-for-incident-analysis/">Using AI Agents for Incident Analysis: Architecture and Guardrails</a></li>
+          <li><a href="/blog/cloud-migration-strategies-7-rs/">On-Prem to Cloud Migration: The 7 Rs Explained</a></li>
+        </ul>
+      </article>
+      <aside class="post-aside">
+        <div class="card">
+          <h4>On this page</h4>
+          <ul class="toc">
+            <li><a href="#devops-in-one-paragraph">DevOps in one paragraph</a></li>
+            <li><a href="#platform-engineering-in-one-paragraph">Platform engineering in one paragraph</a></li>
+            <li><a href="#the-key-differences">The key differences</a></li>
+            <li><a href="#why-platform-engineering-emerged">Why platform engineering emerged</a></li>
+            <li><a href="#signs-you-need-a-platform-team">Signs you need a platform team</a></li>
+            <li><a href="#what-a-good-platform-looks-like">What a good platform looks like</a></li>
+            <li><a href="#common-mistakes-to-avoid">Common mistakes to avoid</a></li>
+            <li><a href="#how-to-get-started">How to get started</a></li>
+            <li><a href="#the-bottom-line">The bottom line</a></li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top:20px;border-top-color:var(--red)">
+          <h4>Work with us</h4>
+          <p style="font-size:.95rem">Get help with Platform Engineering from senior engineers.</p>
+          <a class="btn" href="/contact/" style="padding:10px 18px;font-size:.95rem">Book a consultation</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/assets/logo.png" alt="Jarvix">
+        <p style="color:var(--navy);font-weight:600;margin-bottom:.4em">Engineering at the intersection of cloud and AI</p>
+        <p>Cloud-native platform engineering, DevOps, SRE,<br>observability, AI and MLOps consulting.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+        <a href="/contact/">Contact</a>
+        <a href="/privacy/">Privacy policy</a>
+      </div>
+      <div>
+        <h4>Office</h4>
+        <p>Jarvix Private Limited<br>Pune, Maharashtra,<br>India - 411036</p>
+        <a href="mailto:contact@jarvix.in">contact@jarvix.in</a>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Jarvix Private Limited. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>

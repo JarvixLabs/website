@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://jarvix.in/</loc></url>
+  <url><loc>https://jarvix.in/services.html</loc></url>
+  <url><loc>https://jarvix.in/about.html</loc></url>
+  <url><loc>https://jarvix.in/contact/</loc></url>
+  <url><loc>https://jarvix.in/blog/</loc><lastmod>2026-11-26</lastmod></url>
+  <url><loc>https://jarvix.in/privacy/</loc></url>
+  <url><loc>https://jarvix.in/blog/terraform-vs-opentofu/</loc><lastmod>2026-11-26</lastmod></url>
+  <url><loc>https://jarvix.in/blog/ai-agents-for-incident-analysis/</loc><lastmod>2026-11-24</lastmod></url>
+  <url><loc>https://jarvix.in/blog/cloud-migration-strategies-7-rs/</loc><lastmod>2026-11-10</lastmod></url>
+  <url><loc>https://jarvix.in/blog/reducing-alert-fatigue/</loc><lastmod>2026-10-27</lastmod></url>
+  <url><loc>https://jarvix.in/blog/opentelemetry-for-beginners/</loc><lastmod>2026-10-13</lastmod></url>
+  <url><loc>https://jarvix.in/blog/golden-paths/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://jarvix.in/blog/terraform-module-structure/</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://jarvix.in/blog/platform-engineering-vs-devops/</loc><lastmod>2026-09-01</lastmod></url>
+</urlset>

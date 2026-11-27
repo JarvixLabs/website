@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Golden Paths: How to Design Self-Service Templates Developers Actually Use | Jarvix Blog</title>
+  <meta name="description" content="What golden paths are, why they beat mandates, and a step-by-step approach to designing self-service service templates that developers adopt willingly.">
+  <link rel="canonical" href="https://jarvix.in/blog/golden-paths/">
+  <meta property="og:title" content="Golden Paths: How to Design Self-Service Templates Developers Actually Use | Jarvix Blog">
+  <meta property="og:description" content="What golden paths are, why they beat mandates, and a step-by-step approach to designing self-service service templates that developers adopt willingly.">
+  <meta property="og:url" content="https://jarvix.in/blog/golden-paths/">
+  <meta property="og:image" content="https://jarvix.in/assets/logo.png">
+  <meta property="og:type" content="article">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Golden Paths: How to Design Self-Service Templates Developers Actually Use", "description": "What golden paths are, why they beat mandates, and a step-by-step approach to designing self-service service templates that developers adopt willingly.", "datePublished": "2026-09-29", "dateModified": "2026-09-29", "author": {"@type": "Organization", "name": "Jarvix Engineering", "url": "https://jarvix.in"}, "publisher": {"@type": "Organization", "name": "Jarvix Private Limited", "logo": {"@type": "ImageObject", "url": "https://jarvix.in/assets/logo.png"}}, "mainEntityOfPage": "https://jarvix.in/blog/golden-paths/", "keywords": "Platform Engineering, Developer Experience"}</script>
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a href="/"><img src="/assets/logo.png" alt="Jarvix"></a>
+    <input type="checkbox" id="menu-toggle" aria-label="Toggle menu">
+    <label for="menu-toggle" class="menu-btn" aria-hidden="true">&#9776;</label>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/services.html">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/blog/" aria-current="page">Blog</a>
+      <a href="/contact/" class="btn">Contact us</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="eyebrow"><a href="/blog/" style="color:inherit;text-decoration:none">Blog</a> · Platform Engineering</div>
+      <h1 style="font-size:clamp(1.9rem,4.2vw,2.8rem);max-width:900px">Golden Paths: How to Design Self-Service Templates Developers Actually Use</h1>
+      <p class="meta">By Jarvix Engineering · <time datetime="2026-09-29">29 September 2026</time> · 4 min read</p>
+      <div class="tools"><span class="tools-label">Tools covered</span><span><img src="/assets/logos/backstage.svg" alt="" width="20" height="20">Backstage</span><span><img src="/assets/logos/github.svg" alt="" width="20" height="20">GitHub</span><span><img src="/assets/logos/githubactions.svg" alt="" width="20" height="20">GitHub Actions</span><span><img src="/assets/logos/helm.svg" alt="" width="20" height="20">Helm</span><span><img src="/assets/logos/grafana.svg" alt="" width="20" height="20">Grafana</span><span><img src="/assets/logos/opentelemetry.svg" alt="" width="20" height="20">OpenTelemetry</span></div>
+    </div>
+  </section>
+
+  <section style="padding-top:56px">
+    <div class="wrap post-layout">
+      <article class="article">
+<p>A <strong>golden path</strong> is the opinionated, well-supported way to get a common job done in your organisation, such as creating a new microservice, adding a database or setting up a scheduled job. It is not the only way, but it is the easiest way, because the platform team has already solved the hard parts. Done well, golden paths are the single biggest lever a platform team has on developer productivity.</p>
+
+<h2 id="golden-path-vs-golden-cage">Golden path vs golden cage</h2>
+<p>The difference between a path developers love and one they work around comes down to a few principles:</p>
+<table>
+  <thead><tr><th>Golden path</th><th>Golden cage</th></tr></thead>
+  <tbody>
+    <tr><td>Optional, but clearly the easiest option</td><td>Mandatory, enforced by policy</td></tr>
+    <tr><td>Sensible defaults with escape hatches</td><td>Everything locked down</td></tr>
+    <tr><td>Developers own the generated code</td><td>Black box nobody understands</td></tr>
+    <tr><td>Evolves from developer feedback</td><td>Designed once, then frozen</td></tr>
+  </tbody>
+</table>
+
+<h2 id="what-a-good-golden-path-includes">What a good golden path includes</h2>
+<figure class="diagram"><div class="scroll"><svg viewBox="0 0 760 360" role="img" aria-label="A developer fills in a few fields in a golden path template, which generates a repository, pipeline, deployment, dashboards and catalogue entry" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" xmlns="http://www.w3.org/2000/svg"><title>A developer fills in a few fields in a golden path template, which generates a repository, pipeline, deployment, dashboards and catalogue entry</title><defs><marker id="gp-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b2a45"/></marker><marker id="gp-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c8102e"/></marker><marker id="gp-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f8a4c"/></marker><marker id="gp-ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#29abe2"/></marker></defs><rect x="10" y="130" width="130" height="100" rx="8" fill="#f5f9fc" stroke="#cfdbe5" stroke-width="1.5"/><text x="75.0" y="165" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Developer</text><text x="75.0" y="182" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">name, team,</text><text x="75.0" y="198" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">language</text><line x1="142" y1="180" x2="196" y2="180" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#gp-ah)"/><text x="169" y="171" font-size="11.5" fill="#6b7c8f" text-anchor="middle" font-weight="600">2 min</text><rect x="200" y="110" width="150" height="140" rx="8" fill="#eaf6fc" stroke="#29abe2" stroke-width="1.5"/><text x="275.0" y="140" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Golden path</text><text x="275.0" y="157" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">template</text><image href="/assets/logos/backstage.svg" x="236.0" y="188" width="30" height="30" preserveAspectRatio="xMidYMid meet"/><image href="/assets/logos/github.svg" x="284.0" y="188" width="30" height="30" preserveAspectRatio="xMidYMid meet"/><rect x="410" y="18" width="210" height="54" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><image href="/assets/logos/github.svg" x="422" y="31" width="28" height="28" preserveAspectRatio="xMidYMid meet"/><text x="462" y="42" font-size="13.5" fill="#0b2a45" text-anchor="start" font-weight="700">Repository</text><text x="462" y="59" font-size="11.5" fill="#6b7c8f" text-anchor="start" font-weight="400">code, README, tests</text><line x1="352" y1="180" x2="406" y2="45" stroke="#29abe2" stroke-width="1.8" marker-end="url(#gp-ahc)"/><rect x="410" y="84" width="210" height="54" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><image href="/assets/logos/githubactions.svg" x="422" y="97" width="28" height="28" preserveAspectRatio="xMidYMid meet"/><text x="462" y="108" font-size="13.5" fill="#0b2a45" text-anchor="start" font-weight="700">CI/CD pipeline</text><text x="462" y="125" font-size="11.5" fill="#6b7c8f" text-anchor="start" font-weight="400">build, scan, deploy</text><line x1="352" y1="180" x2="406" y2="111" stroke="#29abe2" stroke-width="1.8" marker-end="url(#gp-ahc)"/><rect x="410" y="150" width="210" height="54" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><image href="/assets/logos/helm.svg" x="422" y="163" width="28" height="28" preserveAspectRatio="xMidYMid meet"/><text x="462" y="174" font-size="13.5" fill="#0b2a45" text-anchor="start" font-weight="700">Deployment config</text><text x="462" y="191" font-size="11.5" fill="#6b7c8f" text-anchor="start" font-weight="400">health checks, autoscaling</text><line x1="352" y1="180" x2="406" y2="177" stroke="#29abe2" stroke-width="1.8" marker-end="url(#gp-ahc)"/><rect x="410" y="216" width="210" height="54" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><image href="/assets/logos/grafana.svg" x="422" y="229" width="28" height="28" preserveAspectRatio="xMidYMid meet"/><text x="462" y="240" font-size="13.5" fill="#0b2a45" text-anchor="start" font-weight="700">Dashboards</text><text x="462" y="257" font-size="11.5" fill="#6b7c8f" text-anchor="start" font-weight="400">metrics, logs, traces</text><line x1="352" y1="180" x2="406" y2="243" stroke="#29abe2" stroke-width="1.8" marker-end="url(#gp-ahc)"/><rect x="410" y="282" width="210" height="54" rx="8" fill="#ffffff" stroke="#cfdbe5" stroke-width="1.5"/><image href="/assets/logos/backstage.svg" x="422" y="295" width="28" height="28" preserveAspectRatio="xMidYMid meet"/><text x="462" y="306" font-size="13.5" fill="#0b2a45" text-anchor="start" font-weight="700">Catalogue entry</text><text x="462" y="323" font-size="11.5" fill="#6b7c8f" text-anchor="start" font-weight="400">owner, docs, links</text><line x1="352" y1="180" x2="406" y2="309" stroke="#29abe2" stroke-width="1.8" marker-end="url(#gp-ahc)"/><line x1="622" y1="180" x2="652" y2="180" stroke="#0b2a45" stroke-width="1.8" marker-end="url(#gp-ah)"/><rect x="656" y="120" width="96" height="120" rx="8" fill="#e9f7ef" stroke="#a7d9bb" stroke-width="1.5"/><text x="704.0" y="196" font-size="14" fill="#0b2a45" text-anchor="middle" font-weight="700">Running</text><text x="704.0" y="213" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">in dev</text><text x="704.0" y="229" font-size="12" fill="#6b7c8f" text-anchor="middle" font-weight="400">in minutes</text><image href="/assets/logos/kubernetes.svg" x="689" y="132" width="30" height="30" preserveAspectRatio="xMidYMid meet"/></svg></div><figcaption>One template produces a deployable, observable service in minutes.</figcaption></figure>
+<p>For the classic "new service" path, the template should produce a working, deployable service in minutes, with:</p>
+<ul>
+  <li>A repository with a standard layout, a README and a working "hello world" endpoint.</li>
+  <li>A CI/CD pipeline already configured: build, unit tests, security and dependency scanning, container build and deployment to a dev environment.</li>
+  <li>Deployment configuration (for example a Helm chart or Kustomize overlay) with resource requests, health checks and autoscaling defaults.</li>
+  <li>Observability from the first commit: structured logging, metrics, tracing via OpenTelemetry, and a starter dashboard.</li>
+  <li>Secrets handled through your secrets manager, never in the repository.</li>
+  <li>Ownership metadata registered in the service catalogue.</li>
+</ul>
+
+<h2 id="a-step-by-step-approach">A step-by-step approach</h2>
+<h3>1. Pick the journey with the most pain</h3>
+<p>Interview a handful of developers and look at your ticket queue. The best first candidate is a journey that is frequent, slow and error-prone. "Create a new service and get it to production" is the usual winner.</p>
+
+<h3>2. Map the current journey</h3>
+<p>Write down every step a developer takes today, including waiting for approvals, copying config from another repo and asking colleagues for help. Time each step. This baseline is what you will measure improvement against.</p>
+
+<h3>3. Codify the best existing example</h3>
+<p>Don't design from scratch. Find the best-run service you already have and turn its setup into a template. It has already proven itself in production, and its owners become your first advocates.</p>
+
+<h3>4. Choose the delivery mechanism</h3>
+<ul>
+  <li><strong>Developer portal templates</strong>, such as Backstage Software Templates, give a form-based experience and register the result in the catalogue.</li>
+  <li><strong>CLI scaffolding</strong> tools such as Cookiecutter or Copier suit teams who live in the terminal.</li>
+  <li><strong>Template repositories</strong> on GitHub or GitLab are the simplest place to start.</li>
+</ul>
+<p>Start with the simplest mechanism that works. You can always add a portal later.</p>
+
+<h3>5. Keep parameters few</h3>
+<p>Ask only for what genuinely varies: service name, owning team, language, and perhaps whether it needs a database. Every extra question is a decision you are pushing back onto the developer.</p>
+
+<h3>6. Plan for day two</h3>
+<p>Generating a service is the easy part. Decide how improvements reach services created months ago. Options include shared pipeline templates referenced by version, base container images that are rebuilt centrally, and automated pull requests (for example with Renovate) that update dependencies and configuration.</p>
+
+<h3>7. Measure and iterate</h3>
+<ul>
+  <li><strong>Time to first deployment</strong> of a new service.</li>
+  <li><strong>Adoption:</strong> the share of new services created from the golden path.</li>
+  <li><strong>Drift:</strong> how far existing services have moved from the current template.</li>
+  <li><strong>Developer satisfaction</strong>, through short surveys after use.</li>
+</ul>
+
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+  <li><strong>Too many templates.</strong> Five well-maintained paths beat thirty stale ones.</li>
+  <li><strong>No owner.</strong> Each golden path needs a named team responsible for keeping it current.</li>
+  <li><strong>Hidden magic.</strong> If developers can't read and change what was generated, they will stop trusting it.</li>
+  <li><strong>Ignoring feedback.</strong> When teams diverge from the path, find out why. It is usually a missing feature, not a discipline problem.</li>
+</ul>
+
+<h2 id="where-to-go-next">Where to go next</h2>
+<p>Once your first golden path is adopted, extend the same approach to the next most common journeys: adding a database, creating a scheduled job, or exposing a service publicly. Each new path removes a little more friction, and together they become the foundation of your internal developer platform.</p>
+
+        <div class="callout">
+          <h3 style="margin-top:0">Need help with platform engineering?</h3>
+          <p>Jarvix helps teams design, build and run this in production. See our <a href="/services.html#platform">Platform Engineering</a> services or <a href="/contact/">book a consultation</a>.</p>
+        </div>
+
+        <h3>More from the blog</h3>
+        <ul>
+          <li><a href="/blog/terraform-vs-opentofu/">Terraform vs OpenTofu: Differences, Licensing and How to Choose</a></li>
+          <li><a href="/blog/ai-agents-for-incident-analysis/">Using AI Agents for Incident Analysis: Architecture and Guardrails</a></li>
+          <li><a href="/blog/cloud-migration-strategies-7-rs/">On-Prem to Cloud Migration: The 7 Rs Explained</a></li>
+        </ul>
+      </article>
+      <aside class="post-aside">
+        <div class="card">
+          <h4>On this page</h4>
+          <ul class="toc">
+            <li><a href="#golden-path-vs-golden-cage">Golden path vs golden cage</a></li>
+            <li><a href="#what-a-good-golden-path-includes">What a good golden path includes</a></li>
+            <li><a href="#a-step-by-step-approach">A step-by-step approach</a></li>
+            <li><a href="#common-pitfalls">Common pitfalls</a></li>
+            <li><a href="#where-to-go-next">Where to go next</a></li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top:20px;border-top-color:var(--red)">
+          <h4>Work with us</h4>
+          <p style="font-size:.95rem">Get help with Platform Engineering from senior engineers.</p>
+          <a class="btn" href="/contact/" style="padding:10px 18px;font-size:.95rem">Book a consultation</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/assets/logo.png" alt="Jarvix">
+        <p style="color:var(--navy);font-weight:600;margin-bottom:.4em">Engineering at the intersection of cloud and AI</p>
+        <p>Cloud-native platform engineering, DevOps, SRE,<br>observability, AI and MLOps consulting.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+        <a href="/contact/">Contact</a>
+        <a href="/privacy/">Privacy policy</a>
+      </div>
+      <div>
+        <h4>Office</h4>
+        <p>Jarvix Private Limited<br>Pune, Maharashtra,<br>India - 411036</p>
+        <a href="mailto:contact@jarvix.in">contact@jarvix.in</a>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Jarvix Private Limited. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>
